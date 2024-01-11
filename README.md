@@ -132,7 +132,7 @@ Follow this steps to use the Workbook:
 
 - Click in the ‘Save’ button on the toolbar
 
-(TBD)
+![image](https://github.com/dolevshor/Azure-OpenAI-Insights/assets/69309933/1aa875d8-0303-49a1-8a0d-74e83949e386)
 
 - Select a name and where to save the Workbook:
   - Title: _'Orphaned Resources'_
@@ -141,16 +141,10 @@ Follow this steps to use the Workbook:
   - Location: <_Region_>
 - Click _'Save'_
   
-(TBD) 
-
 The Workbook is ready to use!
 - Click on _'Workbooks'_
-- Click on _'Orphaned Resources'_ Workbook.
-
-(TBD)
+- Click on _'Azure OpenAI Insights'_ Workbook.
 
 Start using the Workbook and analyze your Azure OpenAI resources.<br/>
 
-(Optional) You can filter by specific subscription/s or resource/s.
-
-(TBD)
+> (Optional) You can filter by specific subscription/s or resource/s.
