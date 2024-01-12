@@ -135,7 +135,7 @@ Follow this steps to use the Workbook:
 ![image](https://github.com/dolevshor/Azure-OpenAI-Insights/assets/69309933/1aa875d8-0303-49a1-8a0d-74e83949e386)
 
 - Select a name and where to save the Workbook:
-  - Title: _'Orphaned Resources'_
+  - Title: _'Azure OpenAI Insights'_
   - Subscription: <_Subscription Name_>
   - Resource group: <_Resource Group Name_>
   - Location: <_Region_>
