@@ -40,7 +40,7 @@
             "queryType": 1,
             "resourceType": "microsoft.resourcegraph/resources",
             "value": [
-              "/subscriptions/6ca6f98e-9495-4385-b0f3-333d4182161f"
+              "value::all"
             ]
           },
           {
@@ -53,7 +53,7 @@
             "multiSelect": true,
             "quote": "'",
             "delimiter": ",",
-            "query": "Resources\r\n| where type =~ 'microsoft.cognitiveservices/accounts'\r\n| order by name asc\r\n| extend Rank = row_number()\r\n| project value = id, label = id, selected = Rank <= 5",
+            "query": "Resources\r\n| where type =~ 'microsoft.cognitiveservices/accounts'\r\n| where kind =~ 'OpenAI'\r\n| order by name asc\r\n| extend Rank = row_number()\r\n| project value = id, label = id, selected = Rank <= 5",
             "crossComponentResources": [
               "{Subscription}"
             ],
@@ -63,11 +63,9 @@
               ],
               "showDefault": false
             },
+            "defaultValue": "value::all",
             "queryType": 1,
-            "resourceType": "microsoft.resourcegraph/resources",
-            "value": [
-              "/subscriptions/6ca6f98e-9495-4385-b0f3-333d4182161f/resourceGroups/OpenAI-Demo3/providers/Microsoft.CognitiveServices/accounts/openai-intance3"
-            ]
+            "resourceType": "microsoft.resourcegraph/resources"
           },
           {
             "id": "c4b69c01-2263-4ada-8d9c-43433b739ff3",
@@ -392,7 +390,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "resources\r\n| where type == \"microsoft.cognitiveservices/accounts\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(type) by tostring(properties.privateEndpointConnections)",
+                    "query": "resources\r\n| where type == \"microsoft.cognitiveservices/accounts\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| extend privateEndpointConnections = properties.privateEndpointConnections\r\n| extend privateEndpointConnections = iff(privateEndpointConnections == '[]','Disabled','Enabled')\r\n| summarize count(type) by tostring(privateEndpointConnections)",
                     "size": 3,
                     "title": "Count by Private Network Access",
                     "queryType": 1,
@@ -642,14 +640,13 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIRequests",
-                              "aggregation": 1,
-                              "splitBy": null
+                              "aggregation": 1
                             }
                           ],
                           "title": "Azure OpenAI Requests",
@@ -742,14 +739,13 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-TokenTransaction",
-                              "aggregation": 1,
-                              "splitBy": null
+                              "aggregation": 1
                             }
                           ],
                           "title": "Processed Inference Tokens",
@@ -842,14 +838,13 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-ProcessedPromptTokens",
-                              "aggregation": 1,
-                              "splitBy": null
+                              "aggregation": 1
                             }
                           ],
                           "title": "Processed Prompt Tokens",
@@ -920,14 +915,13 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-GeneratedTokens",
-                              "aggregation": 1,
-                              "splitBy": null
+                              "aggregation": 1
                             }
                           ],
                           "title": "Generated Completions Tokens",
@@ -998,14 +992,13 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-FineTunedTrainingHours",
-                              "aggregation": 1,
-                              "splitBy": null
+                              "aggregation": 1
                             }
                           ],
                           "title": "Processed FineTuned Training Hours",
@@ -1076,14 +1069,13 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilization",
-                              "aggregation": 4,
-                              "splitBy": null
+                              "aggregation": 4
                             }
                           ],
                           "title": "Provisioned-managed Utilization",
@@ -1177,7 +1169,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -1255,7 +1247,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -1355,7 +1347,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -1433,7 +1425,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -1511,7 +1503,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -1589,7 +1581,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -1667,7 +1659,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -1745,7 +1737,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -1846,7 +1838,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -2002,7 +1994,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -2080,14 +2072,13 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-ProcessedPromptTokens",
-                              "aggregation": 1,
-                              "splitBy": null
+                              "aggregation": 1
                             }
                           ],
                           "title": "Processed Prompt Tokens by Model Deployment Name",
@@ -2158,7 +2149,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -2236,7 +2227,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -2314,7 +2305,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -2392,7 +2383,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -2493,7 +2484,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -2571,7 +2562,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -2649,7 +2640,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -2727,7 +2718,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -3093,7 +3084,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))  \r\n| summarize count() by Resource",
                           "size": 3,
-                          "title": "RequestResponse by Resource",
+                          "title": "Request / Response by Resource",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -3161,7 +3152,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend Location = Tenant_s\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))  \r\n| summarize count() by Location",
                           "size": 3,
-                          "title": "RequestResponse by Location",
+                          "title": "Request / Response by Location",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -3229,7 +3220,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend streamType=properties.streamType\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))  \r\n| summarize count() by tostring(streamType)",
                           "size": 3,
-                          "title": "RequestResponse by streamType",
+                          "title": "Request / Response by streamType",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -3297,7 +3288,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(modelName) by tostring(modelName), APIOperationName, OperationName\r\n| sort by tostring(modelName) asc, APIOperationName asc\r\n",
                           "size": 0,
-                          "title": "RequestsResponso by Model Name + API Operation Name",
+                          "title": "Request / Response by Model Name + API Operation Name",
                           "timeContextFromParameter": "TimeRange",
                           "showExportToExcel": true,
                           "queryType": 0,
@@ -3373,7 +3364,7 @@
                           }
                         },
                         "customWidth": "60",
-                        "name": "query - RequestsResponso by Model Name + API Operation Name"
+                        "name": "query - RequestResponse by Model Name + API Operation Name"
                       },
                       {
                         "type": 3,
@@ -3381,7 +3372,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))  \r\n| summarize count() by tostring(modelName)",
                           "size": 3,
-                          "title": "RequestResponse by Model Name",
+                          "title": "Request / Response by Model Name",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -3449,7 +3440,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n)\r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(OperationName) by APIOperationName, OperationName\r\n| sort by APIOperationName asc",
                           "size": 0,
-                          "title": "RequestResponse by API Operation Name",
+                          "title": "Request / Response by API Operation Name",
                           "timeContextFromParameter": "TimeRange",
                           "showExportToExcel": true,
                           "queryType": 0,
@@ -3533,7 +3524,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend APIOperationName = case(\r\n    OperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\n    OperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\n    OperationName\r\n    ) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count() by tostring(APIOperationName)",
                           "size": 3,
-                          "title": "RequestResponse by API Operation Name",
+                          "title": "Request / Response by API Operation Name",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -3601,7 +3592,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(modelDeploymentName) by tostring(modelDeploymentName), tostring(modelName), APIOperationName\r\n| sort by tostring(modelDeploymentName) asc, APIOperationName asc\r\n",
                           "size": 0,
-                          "title": "RequestsResponso by Model Deployment Name + API Operation Name",
+                          "title": "Request / Response by Model Deployment Name + API Operation Name",
                           "timeContextFromParameter": "TimeRange",
                           "showExportToExcel": true,
                           "queryType": 0,
@@ -3677,7 +3668,7 @@
                           }
                         },
                         "customWidth": "60",
-                        "name": "query - RequestsResponso by Model Deployment Name + API Operation Name - Copy"
+                        "name": "query - RequestResponse by Model Deployment Name + API Operation Name - Copy"
                       },
                       {
                         "type": 3,
@@ -3685,7 +3676,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))  \r\n| summarize count() by tostring(modelDeploymentName)",
                           "size": 3,
-                          "title": "RequestResponse by Model Deployment Name",
+                          "title": "Request / Response by Model Deployment Name",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -3756,7 +3747,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize avg(DurationMs) by tostring(modelDeploymentName), tostring(modelName), APIOperationName\r\n| sort by tostring(modelDeploymentName) asc, APIOperationName asc\r\n",
                           "size": 0,
-                          "title": "RequestsResponso by Avg Duration (ms)",
+                          "title": "Request / Response by Avg Duration (ms)",
                           "timeContextFromParameter": "TimeRange",
                           "showExportToExcel": true,
                           "queryType": 0,
@@ -3837,7 +3828,7 @@
                           }
                         },
                         "customWidth": "50",
-                        "name": "query - RequestsResponso by Avg Duration (ms)"
+                        "name": "query - RequestResponse by Avg Duration (ms)"
                       },
                       {
                         "type": 3,
@@ -3845,7 +3836,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize avg(DurationMs) by tostring(modelDeploymentName), tostring(modelName), APIOperationName, OperationName\r\n| sort by tostring(modelDeploymentName) asc, APIOperationName asc",
                           "size": 0,
-                          "title": "RequestsResponso by Avg Duration (ms)",
+                          "title": "Request / Response by Avg Duration (ms)",
                           "timeContextFromParameter": "TimeRange",
                           "showExportToExcel": true,
                           "queryType": 0,
@@ -3910,7 +3901,7 @@
                           }
                         },
                         "customWidth": "50",
-                        "name": "query - RequestsResponso by Avg Duration (ms)"
+                        "name": "query - RequestResponse by Avg Duration (ms)"
                       }
                     ]
                   },
@@ -3941,7 +3932,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))  \r\n| summarize count() by CallerIPAddress",
                           "size": 3,
-                          "title": "RequestResponse by CallerIP Address",
+                          "title": "Request / Response by CallerIP Address",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -4009,7 +4000,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \")) \r\n| summarize avg(DurationMs) by CallerIPAddress",
                           "size": 3,
-                          "title": "Avg Duration (ms) by Caller IP Address",
+                          "title": "Request / Response Avg Duration (ms) by Caller IP Address",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -4069,7 +4060,7 @@
                           }
                         },
                         "customWidth": "70",
-                        "name": "query - Avg Duration (ms) by Caller IP Address"
+                        "name": "query - RequestResponse Avg Duration (ms) by Caller IP Address"
                       },
                       {
                         "type": 3,
@@ -4077,7 +4068,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(modelName) by CallerIPAddress, tostring(modelName), APIOperationName\r\n| sort by CallerIPAddress",
                           "size": 3,
-                          "title": "RequestsResponse Model Name + API Operation Name by CallerIP Address",
+                          "title": "Request / Response Model Name + API Operation Name by CallerIP Address",
                           "timeContextFromParameter": "TimeRange",
                           "showRefreshButton": true,
                           "showExportToExcel": true,
@@ -4154,7 +4145,7 @@
                           }
                         },
                         "customWidth": "50",
-                        "name": "query - RequestsResponse Model Name + API Operation Name by CallerIP Address"
+                        "name": "query - RequestResponse Model Name + API Operation Name by CallerIP Address"
                       },
                       {
                         "type": 3,
@@ -4162,7 +4153,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(modelDeploymentName) by CallerIPAddress, tostring(modelDeploymentName), APIOperationName\r\n| sort by CallerIPAddress\r\n",
                           "size": 3,
-                          "title": "RequestsResponse Model Deployment Name + API Operation Name by CallerIP Address",
+                          "title": "Request / Response Model Deployment Name + API Operation Name by CallerIP Address",
                           "timeContextFromParameter": "TimeRange",
                           "showRefreshButton": true,
                           "showExportToExcel": true,
@@ -4239,7 +4230,7 @@
                           }
                         },
                         "customWidth": "50",
-                        "name": "query - RequestsResponse Model Deployment Name + API Operation Name by CallerIP Address"
+                        "name": "query - RequestResponse Model Deployment Name + API Operation Name by CallerIP Address"
                       },
                       {
                         "type": 3,
@@ -4247,7 +4238,7 @@
                           "version": "KqlItem/1.0",
                           "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(APIOperationName) by CallerIPAddress, APIOperationName\r\n| sort by CallerIPAddress",
                           "size": 3,
-                          "title": "RequestsResponse API Operation Name by CallerIP Address",
+                          "title": "Request / Response API Operation Name by CallerIP Address",
                           "timeContextFromParameter": "TimeRange",
                           "showRefreshButton": true,
                           "exportFieldName": "CallerIPAddress",
@@ -4326,7 +4317,7 @@
                           }
                         },
                         "customWidth": "50",
-                        "name": "query - RequestsResponse API Operation Name by CallerIP Address"
+                        "name": "query - RequestResponse API Operation Name by CallerIP Address"
                       }
                     ]
                   },
@@ -4346,7 +4337,7 @@
                       {
                         "type": 1,
                         "content": {
-                          "json": "### All Logs\r\nAll operational logs, with the exclusion of administration logs.",
+                          "json": "### All Logs\r\nAll *\"Request / Response\"* operational logs, with the exclusion of administration logs.",
                           "style": "upsell"
                         },
                         "name": "text - Monitor"
