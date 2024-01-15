@@ -1,7 +1,8 @@
 # Azure OpenAI Insights
 The 'Azure OpenAI Insights' workbook offers deep insights into Azure OpenAI usage, helping you manage costs, optimize performance, and make strategic decisions for a robust AI infrastructure.
 
-![image](https://github.com/dolevshor/Azure-OpenAI-Insights/assets/69309933/ee2d7ad0-3b21-4815-b536-2a3680cbfa78)
+![image](https://github.com/dolevshor/Azure-OpenAI-Insights/assets/69309933/d3ed1aaa-5c10-40fb-89b7-d40b487d69a3)
+
 
 ## Introduction
 
