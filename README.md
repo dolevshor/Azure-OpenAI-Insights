@@ -80,7 +80,7 @@ Types of views this workbook provides:
 
 - **Insights**
   - Overview
-    - RequestRespons
+    - Request / Response
       - by Resource
       - by Location
       - by StreamType
@@ -91,7 +91,7 @@ Types of views this workbook provides:
       - by Model Deployment Name
       - by Avg Duration (ms)
   - By CallerIP
-    - RequestRespons
+    - Request / Response
     - Avg Duration (ms)
     - Model Name + API Operation Name
     - Model Deployment Name + API Operation Name
