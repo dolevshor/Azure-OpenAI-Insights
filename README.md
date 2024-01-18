@@ -8,6 +8,8 @@ The 'Azure OpenAI Insights' workbook offers deep insights into Azure OpenAI usag
 
 In the ever-evolving world of Artificial Intelligence, organizations and entities across various sectors are on a quest to leverage advanced technologies efficiently. Azure OpenAI opens a realm of possibilities, offering both challenges and excitement, particularly for those at the early stages of AI adoption.
 
+Read more in depth in this Tech Community blog: [Azure OpenAI Insights: Monitoring AI with Confidence](https://techcommunity.microsoft.com/t5/fasttrack-for-azure/azure-openai-insights-monitoring-ai-with-confidence/ba-p/4026850)
+
 This workbook offers deep insights into Azure OpenAI resources and usage (Platform Metrics and Logs) and can be powerful tool in analyzing & monitoring your AI initiatives.
 
 ## Structure and Views 
