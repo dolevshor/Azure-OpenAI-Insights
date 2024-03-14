@@ -115,6 +115,9 @@ Types of views this workbook provides:
 
 #### Filters
 
+![image](https://github.com/dolevshor/Azure-OpenAI-Insights/assets/69309933/88233144-bc7f-4ced-bdc8-a6fdc5b73ea8)
+
+
 This workbook support to filter all the logs by several fields:
 - Model Deployment Name
 - Model Name
@@ -128,6 +131,14 @@ All the filters are related to each other to allow a granular view and simplify 
 
 > The information displayed uses [KQL](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/) queries to query the Log Analytics Workspace that store the logs.
 >> Note: The Logs will be available on resources that enabled Diagnostic Settings to Log Analytics Workspace.
+
+<ins>Average Duration (ms)</ins>
+![image](https://github.com/dolevshor/Azure-OpenAI-Insights/assets/69309933/f9eb0778-3a70-4f93-8688-0a028aad71bd)
+
+<ins>Average Request / Response Length (bytes)</ins>
+![image](https://github.com/dolevshor/Azure-OpenAI-Insights/assets/69309933/a4b3cd14-1fc3-46b5-a56e-7a64a977b69b)
+
+
 
 ## How to use it?
 Importing this Workbook to your Azure environment is quite simple.
