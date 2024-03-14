@@ -83,24 +83,49 @@ Types of views this workbook provides:
 
 - **Insights**
   - Overview
-    - Request / Response
+    - Requests
       - by Resource
       - by Location
       - by StreamType
-      - by Model Name + API Operation Name
-      - by Model Name
-      - by API Operation Name
-      - by Model Deployment Name + API Operation Name
+      - by Api Version
+      - by Model Deployment Name + Operation Name
       - by Model Deployment Name
+      - by Model Name + Operation Name
+      - by Model Name
+      - by Operation Name
       - by Avg Duration (ms)
+      - by Avg Request Length (bytes)
+      - by Avg Response Length (bytes)
   - By CallerIP
-    - Request / Response
+    - Requests
+    - Operation Name
+    - Model Deployment Name + Operation Name
+    - Model Name + Operation Name
     - Avg Duration (ms)
-    - Model Name + API Operation Name
-    - Model Deployment Name + API Operation Name
-    - API Operation Name
+    - Avg Request Length (bytes)
+    - Avg Response Length (bytes)
   - All Logs
-  
+    - Successful requests
+  - Failures
+    - Failed requests
+      - by Resources
+      - by Api Version
+      - by Operation name
+      - by Stream Type
+
+#### Filters
+
+This workbook support to filter all the logs by several fields:
+- Model Deployment Name
+- Model Name
+- Model Version
+- Api Version
+- Operation Name
+- Stream Type
+- Location
+
+All the filters are related to each other to allow a granular view and simplify the tracking of the logs.
+
 > The information displayed uses [KQL](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/) queries to query the Log Analytics Workspace that store the logs.
 >> Note: The Logs will be available on resources that enabled Diagnostic Settings to Log Analytics Workspace.
 
