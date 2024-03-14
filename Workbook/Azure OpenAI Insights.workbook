@@ -40,7 +40,7 @@
             "queryType": 1,
             "resourceType": "microsoft.resourcegraph/resources",
             "value": [
-              "value::all"
+              "/subscriptions/6ca6f98e-9495-4385-b0f3-333d4182161f"
             ]
           },
           {
@@ -65,7 +65,10 @@
             },
             "defaultValue": "value::all",
             "queryType": 1,
-            "resourceType": "microsoft.resourcegraph/resources"
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
           },
           {
             "id": "c4b69c01-2263-4ada-8d9c-43433b739ff3",
@@ -3013,6 +3016,14 @@
                         "linkLabel": "All Logs",
                         "subTarget": "insights-AllLogs",
                         "style": "link"
+                      },
+                      {
+                        "id": "a016ca13-0340-4259-871c-33a5b9dca2cb",
+                        "cellValue": "insightsTab",
+                        "linkTarget": "parameter",
+                        "linkLabel": "Failures",
+                        "subTarget": "insights-Failures",
+                        "style": "link"
                       }
                     ]
                   },
@@ -3023,7 +3034,7 @@
                   "content": {
                     "version": "KqlParameterItem/1.0",
                     "crossComponentResources": [
-                      "{Subscription}"
+                      "{Workspace}"
                     ],
                     "parameters": [
                       {
@@ -3059,10 +3070,377 @@
                       }
                     ],
                     "style": "pills",
-                    "queryType": 1,
-                    "resourceType": "microsoft.resourcegraph/resources"
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces"
                   },
                   "name": "parameters - Log Analytics Workspace"
+                },
+                {
+                  "type": 9,
+                  "content": {
+                    "version": "KqlParameterItem/1.0",
+                    "crossComponentResources": [
+                      "{Workspace}"
+                    ],
+                    "parameters": [
+                      {
+                        "id": "b23f8248-be48-42fb-9844-929eaa66464b",
+                        "version": "KqlParameterItem/1.0",
+                        "name": "modeldeploymentname",
+                        "label": "Model Deployment Name",
+                        "type": 2,
+                        "isRequired": true,
+                        "multiSelect": true,
+                        "quote": "'",
+                        "delimiter": ",",
+                        "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n    and Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName)\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == 200    \r\n    and isnotempty(modelDeploymentName)\r\n| distinct modelDeploymentName",
+                        "crossComponentResources": [
+                          "{Workspace}"
+                        ],
+                        "typeSettings": {
+                          "additionalResourceOptions": [
+                            "value::all"
+                          ],
+                          "showDefault": false
+                        },
+                        "timeContext": {
+                          "durationMs": 0
+                        },
+                        "timeContextFromParameter": "TimeRange",
+                        "defaultValue": "value::all",
+                        "queryType": 0,
+                        "resourceType": "microsoft.operationalinsights/workspaces",
+                        "value": [
+                          "value::all"
+                        ]
+                      },
+                      {
+                        "id": "6174e5f6-deff-412d-891a-0f681c2fffd5",
+                        "version": "KqlParameterItem/1.0",
+                        "name": "modelname",
+                        "label": "Model Name",
+                        "type": 2,
+                        "isRequired": true,
+                        "multiSelect": true,
+                        "quote": "'",
+                        "delimiter": ",",
+                        "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n    and Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName)\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == 200\r\n    and modelDeploymentName in ({modeldeploymentname})          \r\n    and isnotempty(modelName)\r\n| distinct modelName",
+                        "crossComponentResources": [
+                          "{Workspace}"
+                        ],
+                        "typeSettings": {
+                          "additionalResourceOptions": [
+                            "value::all"
+                          ],
+                          "showDefault": false
+                        },
+                        "timeContext": {
+                          "durationMs": 0
+                        },
+                        "timeContextFromParameter": "TimeRange",
+                        "defaultValue": "value::all",
+                        "queryType": 0,
+                        "resourceType": "microsoft.operationalinsights/workspaces",
+                        "value": [
+                          "value::all"
+                        ]
+                      },
+                      {
+                        "id": "fe5605b0-a404-4251-9449-a2f92a8cd6ca",
+                        "version": "KqlParameterItem/1.0",
+                        "name": "modelversion",
+                        "label": "Model Version",
+                        "type": 2,
+                        "isRequired": true,
+                        "multiSelect": true,
+                        "quote": "'",
+                        "delimiter": ",",
+                        "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n    and Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=tostring(properties.modelVersion),\r\n        streamType=properties.streamType        \r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == 200\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and isnotempty(modelVersion)\r\n| distinct modelVersion",
+                        "crossComponentResources": [
+                          "{Workspace}"
+                        ],
+                        "typeSettings": {
+                          "additionalResourceOptions": [
+                            "value::all"
+                          ],
+                          "showDefault": false
+                        },
+                        "timeContext": {
+                          "durationMs": 0
+                        },
+                        "timeContextFromParameter": "TimeRange",
+                        "defaultValue": "value::all",
+                        "queryType": 0,
+                        "resourceType": "microsoft.operationalinsights/workspaces"
+                      },
+                      {
+                        "id": "79a79007-6e1c-4fd5-b0f0-211aef3dec54",
+                        "version": "KqlParameterItem/1.0",
+                        "name": "apiVersion",
+                        "label": "API Version",
+                        "type": 2,
+                        "isRequired": true,
+                        "multiSelect": true,
+                        "quote": "'",
+                        "delimiter": ",",
+                        "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n    and Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == 200\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})    \r\n    and modelVersion in ({modelversion})      \r\n    and isnotempty(apiVersion)\r\n| distinct apiVersion",
+                        "crossComponentResources": [
+                          "{Workspace}"
+                        ],
+                        "typeSettings": {
+                          "additionalResourceOptions": [
+                            "value::all"
+                          ],
+                          "showDefault": false
+                        },
+                        "timeContext": {
+                          "durationMs": 0
+                        },
+                        "timeContextFromParameter": "TimeRange",
+                        "defaultValue": "value::all",
+                        "queryType": 0,
+                        "resourceType": "microsoft.operationalinsights/workspaces",
+                        "value": [
+                          "value::all"
+                        ]
+                      },
+                      {
+                        "id": "ed2e4e38-431e-47ac-96aa-89fe66091344",
+                        "version": "KqlParameterItem/1.0",
+                        "name": "OperationName",
+                        "label": "Operation Name",
+                        "type": 2,
+                        "isRequired": true,
+                        "multiSelect": true,
+                        "quote": "'",
+                        "delimiter": ",",
+                        "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n    and Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == 200\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})    \r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})    \r\n    and isnotempty(OperationName)\r\n| distinct OperationName",
+                        "crossComponentResources": [
+                          "{Workspace}"
+                        ],
+                        "typeSettings": {
+                          "additionalResourceOptions": [
+                            "value::all"
+                          ],
+                          "showDefault": false
+                        },
+                        "timeContext": {
+                          "durationMs": 0
+                        },
+                        "timeContextFromParameter": "TimeRange",
+                        "defaultValue": "value::all",
+                        "queryType": 0,
+                        "resourceType": "microsoft.operationalinsights/workspaces",
+                        "value": [
+                          "value::all"
+                        ]
+                      },
+                      {
+                        "id": "9f33d58a-7e23-4cbb-a5bc-fe1fd25d3471",
+                        "version": "KqlParameterItem/1.0",
+                        "name": "streamtype",
+                        "label": "Stream Type",
+                        "type": 2,
+                        "isRequired": true,
+                        "multiSelect": true,
+                        "quote": "'",
+                        "delimiter": ",",
+                        "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n    and Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=tostring(properties.streamType),\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == 200\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})    \r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and isnotempty(streamType)\r\n| distinct streamType",
+                        "crossComponentResources": [
+                          "{Workspace}"
+                        ],
+                        "typeSettings": {
+                          "additionalResourceOptions": [
+                            "value::all"
+                          ],
+                          "showDefault": false
+                        },
+                        "timeContext": {
+                          "durationMs": 0
+                        },
+                        "timeContextFromParameter": "TimeRange",
+                        "defaultValue": "value::all",
+                        "queryType": 0,
+                        "resourceType": "microsoft.operationalinsights/workspaces"
+                      },
+                      {
+                        "id": "7cb4868a-f01b-4674-bbef-7ea2d886a1b1",
+                        "version": "KqlParameterItem/1.0",
+                        "name": "location",
+                        "label": "Location",
+                        "type": 2,
+                        "isRequired": true,
+                        "multiSelect": true,
+                        "quote": "'",
+                        "delimiter": ",",
+                        "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n    and Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend Location = location_s\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == 200\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})    \r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})    \r\n    and streamType in ({streamtype})    \r\n    and isnotempty(Location)\r\n| distinct Location",
+                        "crossComponentResources": [
+                          "{Workspace}"
+                        ],
+                        "typeSettings": {
+                          "additionalResourceOptions": [
+                            "value::all"
+                          ],
+                          "showDefault": false
+                        },
+                        "timeContext": {
+                          "durationMs": 0
+                        },
+                        "timeContextFromParameter": "TimeRange",
+                        "defaultValue": "value::all",
+                        "queryType": 0,
+                        "resourceType": "microsoft.operationalinsights/workspaces"
+                      }
+                    ],
+                    "style": "pills",
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces"
+                  },
+                  "conditionalVisibility": {
+                    "parameterName": "insightsTab",
+                    "comparison": "isNotEqualTo",
+                    "value": "insights-Failures"
+                  },
+                  "name": "parameters - Filters"
+                },
+                {
+                  "type": 9,
+                  "content": {
+                    "version": "KqlParameterItem/1.0",
+                    "crossComponentResources": [
+                      "{Workspace}"
+                    ],
+                    "parameters": [
+                      {
+                        "id": "76dd3d51-fea9-4c49-8c3f-510423bbd2fb",
+                        "version": "KqlParameterItem/1.0",
+                        "name": "apiVersionFailure",
+                        "label": "API Version",
+                        "type": 2,
+                        "isRequired": true,
+                        "multiSelect": true,
+                        "quote": "'",
+                        "delimiter": ",",
+                        "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n    and Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == 404    \r\n    and isnotempty(apiVersion)\r\n| distinct apiVersion",
+                        "crossComponentResources": [
+                          "{Workspace}"
+                        ],
+                        "typeSettings": {
+                          "additionalResourceOptions": [
+                            "value::all"
+                          ],
+                          "showDefault": false
+                        },
+                        "timeContext": {
+                          "durationMs": 0
+                        },
+                        "timeContextFromParameter": "TimeRange",
+                        "defaultValue": "value::all",
+                        "queryType": 0,
+                        "resourceType": "microsoft.operationalinsights/workspaces",
+                        "value": [
+                          "value::all"
+                        ]
+                      },
+                      {
+                        "id": "291ed2f3-a2c1-4d91-9d12-b98b845b8cab",
+                        "version": "KqlParameterItem/1.0",
+                        "name": "OperationNameFailure",
+                        "label": "Operation Name",
+                        "type": 2,
+                        "isRequired": true,
+                        "multiSelect": true,
+                        "quote": "'",
+                        "delimiter": ",",
+                        "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n    and Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == 404\r\n    and apiVersion in ({apiVersionFailure})    \r\n    and isnotempty(OperationName)\r\n| distinct OperationName",
+                        "crossComponentResources": [
+                          "{Workspace}"
+                        ],
+                        "typeSettings": {
+                          "additionalResourceOptions": [
+                            "value::all"
+                          ],
+                          "showDefault": false
+                        },
+                        "timeContext": {
+                          "durationMs": 0
+                        },
+                        "timeContextFromParameter": "TimeRange",
+                        "defaultValue": "value::all",
+                        "queryType": 0,
+                        "resourceType": "microsoft.operationalinsights/workspaces"
+                      },
+                      {
+                        "id": "515fc7f3-052f-4c6b-b837-c66f0a1455fd",
+                        "version": "KqlParameterItem/1.0",
+                        "name": "streamtypeFailure",
+                        "label": "Stream Type",
+                        "type": 2,
+                        "isRequired": true,
+                        "multiSelect": true,
+                        "quote": "'",
+                        "delimiter": ",",
+                        "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n    and Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend streamType=tostring(properties.streamType),\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == 404\r\n    and apiVersion in ({apiVersionFailure})\r\n    and OperationName in ({OperationNameFailure})\r\n    and isnotempty(streamType)\r\n| distinct streamType",
+                        "crossComponentResources": [
+                          "{Workspace}"
+                        ],
+                        "typeSettings": {
+                          "additionalResourceOptions": [
+                            "value::all"
+                          ],
+                          "showDefault": false
+                        },
+                        "timeContext": {
+                          "durationMs": 0
+                        },
+                        "timeContextFromParameter": "TimeRange",
+                        "defaultValue": "value::all",
+                        "queryType": 0,
+                        "resourceType": "microsoft.operationalinsights/workspaces"
+                      },
+                      {
+                        "id": "f6da14b2-546d-4c3a-bc70-f068fc3581e3",
+                        "version": "KqlParameterItem/1.0",
+                        "name": "locationFailure",
+                        "label": "Location",
+                        "type": 2,
+                        "isRequired": true,
+                        "multiSelect": true,
+                        "quote": "'",
+                        "delimiter": ",",
+                        "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n    and Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend Location = location_s\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == 404\r\n    and apiVersion in ({apiVersionFailure})\r\n    and OperationName in ({OperationNameFailure})    \r\n    and streamType in ({streamtypeFailure})    \r\n    and isnotempty(Location)\r\n| distinct Location",
+                        "crossComponentResources": [
+                          "{Workspace}"
+                        ],
+                        "typeSettings": {
+                          "additionalResourceOptions": [
+                            "value::all"
+                          ],
+                          "showDefault": false
+                        },
+                        "timeContext": {
+                          "durationMs": 0
+                        },
+                        "timeContextFromParameter": "TimeRange",
+                        "defaultValue": "value::all",
+                        "queryType": 0,
+                        "resourceType": "microsoft.operationalinsights/workspaces",
+                        "value": [
+                          "swedencentral",
+                          "value::all"
+                        ]
+                      }
+                    ],
+                    "style": "pills",
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces"
+                  },
+                  "conditionalVisibility": {
+                    "parameterName": "insightsTab",
+                    "comparison": "isEqualTo",
+                    "value": "insights-Failures"
+                  },
+                  "name": "parameters - Filters-Failures"
                 },
                 {
                   "type": 12,
@@ -3082,9 +3460,9 @@
                         "type": 3,
                         "content": {
                           "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))  \r\n| summarize count() by Resource",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')        \r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count() by Resource\r\n",
                           "size": 3,
-                          "title": "Request / Response by Resource",
+                          "title": "Requests by Resource",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -3143,16 +3521,16 @@
                             }
                           }
                         },
-                        "customWidth": "33",
+                        "customWidth": "25",
                         "name": "query - RequestResponse by Resource"
                       },
                       {
                         "type": 3,
                         "content": {
                           "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend Location = Tenant_s\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))  \r\n| summarize count() by Location",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend Location = location_s        \r\n| where OperationName !has \"_List\"\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count() by Location",
                           "size": 3,
-                          "title": "Request / Response by Location",
+                          "title": "Requests by Location",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -3211,16 +3589,16 @@
                             }
                           }
                         },
-                        "customWidth": "33",
+                        "customWidth": "25",
                         "name": "query - RequestResponse by Location"
                       },
                       {
                         "type": 3,
                         "content": {
                           "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend streamType=properties.streamType\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))  \r\n| summarize count() by tostring(streamType)",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend streamType=properties.streamType\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count() by tostring(streamType)",
                           "size": 3,
-                          "title": "Request / Response by streamType",
+                          "title": "Requests by Stream Type",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -3279,100 +3657,16 @@
                             }
                           }
                         },
-                        "customWidth": "33",
+                        "customWidth": "25",
                         "name": "query - RequestResponse by streamType"
                       },
                       {
                         "type": 3,
                         "content": {
                           "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(modelName) by tostring(modelName), APIOperationName, OperationName\r\n| sort by tostring(modelName) asc, APIOperationName asc\r\n",
-                          "size": 0,
-                          "title": "Request / Response by Model Name + API Operation Name",
-                          "timeContextFromParameter": "TimeRange",
-                          "showExportToExcel": true,
-                          "queryType": 0,
-                          "resourceType": "microsoft.operationalinsights/workspaces",
-                          "crossComponentResources": [
-                            "{Workspace}"
-                          ],
-                          "visualization": "table",
-                          "gridSettings": {
-                            "filter": true,
-                            "sortBy": [
-                              {
-                                "itemKey": "APIOperationName",
-                                "sortOrder": 1
-                              }
-                            ]
-                          },
-                          "sortBy": [
-                            {
-                              "itemKey": "APIOperationName",
-                              "sortOrder": 1
-                            }
-                          ],
-                          "tileSettings": {
-                            "showBorder": false,
-                            "titleContent": {
-                              "columnMatch": "CallerIPAddress",
-                              "formatter": 1
-                            },
-                            "leftContent": {
-                              "columnMatch": "count_",
-                              "formatter": 12,
-                              "formatOptions": {
-                                "palette": "auto"
-                              },
-                              "numberFormat": {
-                                "unit": 17,
-                                "options": {
-                                  "maximumSignificantDigits": 3,
-                                  "maximumFractionDigits": 2
-                                }
-                              }
-                            }
-                          },
-                          "graphSettings": {
-                            "type": 0,
-                            "topContent": {
-                              "columnMatch": "CallerIPAddress",
-                              "formatter": 1
-                            },
-                            "centerContent": {
-                              "columnMatch": "count_",
-                              "formatter": 1,
-                              "numberFormat": {
-                                "unit": 17,
-                                "options": {
-                                  "maximumSignificantDigits": 3,
-                                  "maximumFractionDigits": 2
-                                }
-                              }
-                            }
-                          },
-                          "chartSettings": {
-                            "xSettings": {
-                              "numberFormatSettings": {
-                                "unit": 0,
-                                "options": {
-                                  "style": "decimal",
-                                  "useGrouping": true
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "customWidth": "60",
-                        "name": "query - RequestResponse by Model Name + API Operation Name"
-                      },
-                      {
-                        "type": 3,
-                        "content": {
-                          "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))  \r\n| summarize count() by tostring(modelName)",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend streamType=properties.streamType\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count() by tostring(apiVersion)",
                           "size": 3,
-                          "title": "Request / Response by Model Name",
+                          "title": "Requests by Api Version",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -3431,16 +3725,16 @@
                             }
                           }
                         },
-                        "customWidth": "35",
-                        "name": "query - RequestResponse by Model Name"
+                        "customWidth": "25",
+                        "name": "query - RequestResponse by apiVersion"
                       },
                       {
                         "type": 3,
                         "content": {
                           "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n)\r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(OperationName) by APIOperationName, OperationName\r\n| sort by APIOperationName asc",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count() by tostring(modelDeploymentName), tostring(modelName), OperationName\r\n| sort by tostring(modelDeploymentName) asc",
                           "size": 0,
-                          "title": "Request / Response by API Operation Name",
+                          "title": "Requests by Model Deployment Name + Operation Name",
                           "timeContextFromParameter": "TimeRange",
                           "showExportToExcel": true,
                           "queryType": 0,
@@ -3450,20 +3744,29 @@
                           ],
                           "visualization": "table",
                           "gridSettings": {
-                            "filter": true,
-                            "sortBy": [
+                            "formatters": [
                               {
-                                "itemKey": "count_OperationName",
-                                "sortOrder": 2
+                                "columnMatch": "count_modelDeploymentName",
+                                "formatter": 1
+                              }
+                            ],
+                            "filter": true,
+                            "labelSettings": [
+                              {
+                                "columnId": "modelDeploymentName",
+                                "label": "Model Deployment Name"
+                              },
+                              {
+                                "columnId": "modelName",
+                                "label": "Model Name"
+                              },
+                              {
+                                "columnId": "OperationName",
+                                "label": "Operation Name"
                               }
                             ]
                           },
-                          "sortBy": [
-                            {
-                              "itemKey": "count_OperationName",
-                              "sortOrder": 2
-                            }
-                          ],
+                          "sortBy": [],
                           "tileSettings": {
                             "showBorder": false,
                             "titleContent": {
@@ -3516,167 +3819,15 @@
                           }
                         },
                         "customWidth": "60",
-                        "name": "query - RequestResponse by API Operation Name"
+                        "name": "query - RequestResponse by Model Deployment Name + Operation Name"
                       },
                       {
                         "type": 3,
                         "content": {
                           "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend APIOperationName = case(\r\n    OperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\n    OperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\n    OperationName\r\n    ) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count() by tostring(APIOperationName)",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count() by tostring(modelDeploymentName)",
                           "size": 3,
-                          "title": "Request / Response by API Operation Name",
-                          "timeContextFromParameter": "TimeRange",
-                          "queryType": 0,
-                          "resourceType": "microsoft.operationalinsights/workspaces",
-                          "crossComponentResources": [
-                            "{Workspace}"
-                          ],
-                          "visualization": "piechart",
-                          "tileSettings": {
-                            "showBorder": false,
-                            "titleContent": {
-                              "columnMatch": "CallerIPAddress",
-                              "formatter": 1
-                            },
-                            "leftContent": {
-                              "columnMatch": "count_",
-                              "formatter": 12,
-                              "formatOptions": {
-                                "palette": "auto"
-                              },
-                              "numberFormat": {
-                                "unit": 17,
-                                "options": {
-                                  "maximumSignificantDigits": 3,
-                                  "maximumFractionDigits": 2
-                                }
-                              }
-                            }
-                          },
-                          "graphSettings": {
-                            "type": 0,
-                            "topContent": {
-                              "columnMatch": "CallerIPAddress",
-                              "formatter": 1
-                            },
-                            "centerContent": {
-                              "columnMatch": "count_",
-                              "formatter": 1,
-                              "numberFormat": {
-                                "unit": 17,
-                                "options": {
-                                  "maximumSignificantDigits": 3,
-                                  "maximumFractionDigits": 2
-                                }
-                              }
-                            }
-                          },
-                          "chartSettings": {
-                            "xSettings": {
-                              "numberFormatSettings": {
-                                "unit": 0,
-                                "options": {
-                                  "style": "decimal",
-                                  "useGrouping": true
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "customWidth": "35",
-                        "name": "query - RequestResponse by API Operation Name"
-                      },
-                      {
-                        "type": 3,
-                        "content": {
-                          "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(modelDeploymentName) by tostring(modelDeploymentName), tostring(modelName), APIOperationName\r\n| sort by tostring(modelDeploymentName) asc, APIOperationName asc\r\n",
-                          "size": 0,
-                          "title": "Request / Response by Model Deployment Name + API Operation Name",
-                          "timeContextFromParameter": "TimeRange",
-                          "showExportToExcel": true,
-                          "queryType": 0,
-                          "resourceType": "microsoft.operationalinsights/workspaces",
-                          "crossComponentResources": [
-                            "{Workspace}"
-                          ],
-                          "visualization": "table",
-                          "gridSettings": {
-                            "filter": true,
-                            "sortBy": [
-                              {
-                                "itemKey": "count_modelDeploymentName",
-                                "sortOrder": 2
-                              }
-                            ]
-                          },
-                          "sortBy": [
-                            {
-                              "itemKey": "count_modelDeploymentName",
-                              "sortOrder": 2
-                            }
-                          ],
-                          "tileSettings": {
-                            "showBorder": false,
-                            "titleContent": {
-                              "columnMatch": "CallerIPAddress",
-                              "formatter": 1
-                            },
-                            "leftContent": {
-                              "columnMatch": "count_",
-                              "formatter": 12,
-                              "formatOptions": {
-                                "palette": "auto"
-                              },
-                              "numberFormat": {
-                                "unit": 17,
-                                "options": {
-                                  "maximumSignificantDigits": 3,
-                                  "maximumFractionDigits": 2
-                                }
-                              }
-                            }
-                          },
-                          "graphSettings": {
-                            "type": 0,
-                            "topContent": {
-                              "columnMatch": "CallerIPAddress",
-                              "formatter": 1
-                            },
-                            "centerContent": {
-                              "columnMatch": "count_",
-                              "formatter": 1,
-                              "numberFormat": {
-                                "unit": 17,
-                                "options": {
-                                  "maximumSignificantDigits": 3,
-                                  "maximumFractionDigits": 2
-                                }
-                              }
-                            }
-                          },
-                          "chartSettings": {
-                            "xSettings": {
-                              "numberFormatSettings": {
-                                "unit": 0,
-                                "options": {
-                                  "style": "decimal",
-                                  "useGrouping": true
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "customWidth": "60",
-                        "name": "query - RequestResponse by Model Deployment Name + API Operation Name - Copy"
-                      },
-                      {
-                        "type": 3,
-                        "content": {
-                          "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))  \r\n| summarize count() by tostring(modelDeploymentName)",
-                          "size": 3,
-                          "title": "Request / Response by Model Deployment Name",
+                          "title": "Requests by Model Deployment Name",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -3745,9 +3896,319 @@
                         "type": 3,
                         "content": {
                           "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize avg(DurationMs) by tostring(modelDeploymentName), tostring(modelName), APIOperationName\r\n| sort by tostring(modelDeploymentName) asc, APIOperationName asc\r\n",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count() by tostring(modelName), OperationName\r\n| sort by tostring(modelName) asc\r\n",
                           "size": 0,
-                          "title": "Request / Response by Avg Duration (ms)",
+                          "title": "Requests by Model Name + Operation Name",
+                          "timeContextFromParameter": "TimeRange",
+                          "showExportToExcel": true,
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces",
+                          "crossComponentResources": [
+                            "{Workspace}"
+                          ],
+                          "visualization": "table",
+                          "gridSettings": {
+                            "filter": true,
+                            "labelSettings": [
+                              {
+                                "columnId": "modelName",
+                                "label": "Model Name"
+                              },
+                              {
+                                "columnId": "OperationName",
+                                "label": "Operation Name"
+                              }
+                            ]
+                          },
+                          "sortBy": [],
+                          "tileSettings": {
+                            "showBorder": false,
+                            "titleContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "leftContent": {
+                              "columnMatch": "count_",
+                              "formatter": 12,
+                              "formatOptions": {
+                                "palette": "auto"
+                              },
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "graphSettings": {
+                            "type": 0,
+                            "topContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "centerContent": {
+                              "columnMatch": "count_",
+                              "formatter": 1,
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "chartSettings": {
+                            "xSettings": {
+                              "numberFormatSettings": {
+                                "unit": 0,
+                                "options": {
+                                  "style": "decimal",
+                                  "useGrouping": true
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "customWidth": "60",
+                        "name": "query - RequestResponse by Model Name + Operation Name"
+                      },
+                      {
+                        "type": 3,
+                        "content": {
+                          "version": "KqlItem/1.0",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count() by tostring(modelName)",
+                          "size": 3,
+                          "title": "Requests by Model Name",
+                          "timeContextFromParameter": "TimeRange",
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces",
+                          "crossComponentResources": [
+                            "{Workspace}"
+                          ],
+                          "visualization": "piechart",
+                          "tileSettings": {
+                            "showBorder": false,
+                            "titleContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "leftContent": {
+                              "columnMatch": "count_",
+                              "formatter": 12,
+                              "formatOptions": {
+                                "palette": "auto"
+                              },
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "graphSettings": {
+                            "type": 0,
+                            "topContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "centerContent": {
+                              "columnMatch": "count_",
+                              "formatter": 1,
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "chartSettings": {
+                            "xSettings": {
+                              "numberFormatSettings": {
+                                "unit": 0,
+                                "options": {
+                                  "style": "decimal",
+                                  "useGrouping": true
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "customWidth": "35",
+                        "name": "query - RequestResponse by Model Name"
+                      },
+                      {
+                        "type": 3,
+                        "content": {
+                          "version": "KqlItem/1.0",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count() by OperationName\r\n| sort by OperationName asc",
+                          "size": 0,
+                          "title": "Requests by Operation Name",
+                          "timeContextFromParameter": "TimeRange",
+                          "showExportToExcel": true,
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces",
+                          "crossComponentResources": [
+                            "{Workspace}"
+                          ],
+                          "visualization": "table",
+                          "gridSettings": {
+                            "filter": true,
+                            "labelSettings": [
+                              {
+                                "columnId": "OperationName",
+                                "label": "Operation Name"
+                              },
+                              {
+                                "columnId": "count_",
+                                "label": "Requests"
+                              }
+                            ]
+                          },
+                          "sortBy": [],
+                          "tileSettings": {
+                            "showBorder": false,
+                            "titleContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "leftContent": {
+                              "columnMatch": "count_",
+                              "formatter": 12,
+                              "formatOptions": {
+                                "palette": "auto"
+                              },
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "graphSettings": {
+                            "type": 0,
+                            "topContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "centerContent": {
+                              "columnMatch": "count_",
+                              "formatter": 1,
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "chartSettings": {
+                            "xSettings": {
+                              "numberFormatSettings": {
+                                "unit": 0,
+                                "options": {
+                                  "style": "decimal",
+                                  "useGrouping": true
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "customWidth": "60",
+                        "name": "query - RequestResponse by Operation Name"
+                      },
+                      {
+                        "type": 3,
+                        "content": {
+                          "version": "KqlItem/1.0",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count() by tostring(OperationName)",
+                          "size": 3,
+                          "title": "Requests by Operation Name",
+                          "timeContextFromParameter": "TimeRange",
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces",
+                          "crossComponentResources": [
+                            "{Workspace}"
+                          ],
+                          "visualization": "piechart",
+                          "tileSettings": {
+                            "showBorder": false,
+                            "titleContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "leftContent": {
+                              "columnMatch": "count_",
+                              "formatter": 12,
+                              "formatOptions": {
+                                "palette": "auto"
+                              },
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "graphSettings": {
+                            "type": 0,
+                            "topContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "centerContent": {
+                              "columnMatch": "count_",
+                              "formatter": 1,
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "chartSettings": {
+                            "xSettings": {
+                              "numberFormatSettings": {
+                                "unit": 0,
+                                "options": {
+                                  "style": "decimal",
+                                  "useGrouping": true
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "customWidth": "35",
+                        "name": "query - RequestResponse by Operation Name"
+                      },
+                      {
+                        "type": 1,
+                        "content": {
+                          "json": "### Averages\r\nAverages of duration (ms), requestLength (bytes) and responseLength (bytes) by Model Deployment Name, Model Name and Operation Names.",
+                          "style": "info"
+                        },
+                        "name": "text - Average"
+                      },
+                      {
+                        "type": 3,
+                        "content": {
+                          "version": "KqlItem/1.0",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count(modelDeploymentName), avg(DurationMs) by tostring(modelDeploymentName), tostring(modelName), OperationName\r\n| sort by tostring(modelDeploymentName) asc\r\n",
+                          "size": 0,
+                          "title": "Requests by Avg Duration (ms)",
                           "timeContextFromParameter": "TimeRange",
                           "showExportToExcel": true,
                           "queryType": 0,
@@ -3758,6 +4219,10 @@
                           "visualization": "table",
                           "gridSettings": {
                             "formatters": [
+                              {
+                                "columnMatch": "count_modelDeploymentName",
+                                "formatter": 1
+                              },
                               {
                                 "columnMatch": "avg_DurationMs",
                                 "formatter": 1,
@@ -3773,7 +4238,29 @@
                                 }
                               }
                             ],
-                            "filter": true
+                            "filter": true,
+                            "labelSettings": [
+                              {
+                                "columnId": "modelDeploymentName",
+                                "label": "Model Deployment Name"
+                              },
+                              {
+                                "columnId": "modelName",
+                                "label": "Model Name"
+                              },
+                              {
+                                "columnId": "OperationName",
+                                "label": "Operation Name"
+                              },
+                              {
+                                "columnId": "count_modelDeploymentName",
+                                "label": "Requests"
+                              },
+                              {
+                                "columnId": "avg_DurationMs",
+                                "label": "Avg Duration (ms)"
+                              }
+                            ]
                           },
                           "sortBy": [],
                           "tileSettings": {
@@ -3834,9 +4321,201 @@
                         "type": 3,
                         "content": {
                           "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize avg(DurationMs) by tostring(modelDeploymentName), tostring(modelName), APIOperationName, OperationName\r\n| sort by tostring(modelDeploymentName) asc, APIOperationName asc",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend ModelAndOperation = strcat(modelDeploymentName,\" (\",OperationName,\")\")\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize avg(DurationMs) by tostring(ModelAndOperation)\r\n| sort by tostring(ModelAndOperation) asc",
                           "size": 0,
-                          "title": "Request / Response by Avg Duration (ms)",
+                          "title": "Requests by Avg Duration (ms)",
+                          "timeContextFromParameter": "TimeRange",
+                          "showExportToExcel": true,
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces",
+                          "crossComponentResources": [
+                            "{Workspace}"
+                          ],
+                          "visualization": "barchart",
+                          "gridSettings": {
+                            "filter": true
+                          },
+                          "sortBy": [],
+                          "tileSettings": {
+                            "showBorder": false,
+                            "titleContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "leftContent": {
+                              "columnMatch": "count_",
+                              "formatter": 12,
+                              "formatOptions": {
+                                "palette": "auto"
+                              },
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "graphSettings": {
+                            "type": 0,
+                            "topContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "centerContent": {
+                              "columnMatch": "count_",
+                              "formatter": 1,
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "chartSettings": {
+                            "xSettings": {
+                              "numberFormatSettings": {
+                                "unit": 0,
+                                "options": {
+                                  "style": "decimal",
+                                  "useGrouping": true
+                                }
+                              },
+                              "label": ""
+                            },
+                            "ySettings": {
+                              "label": ""
+                            }
+                          }
+                        },
+                        "customWidth": "50",
+                        "name": "query - RequestResponse by Avg Duration (ms) | Model Deployment Name (Operation Name)"
+                      },
+                      {
+                        "type": 3,
+                        "content": {
+                          "version": "KqlItem/1.0",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend requestLength=toint(properties.requestLength)\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count(), avg(requestLength) by tostring(modelDeploymentName), tostring(modelName), OperationName\r\n| sort by tostring(modelDeploymentName) asc, OperationName asc\r\n",
+                          "size": 0,
+                          "title": "Requests by Avg requestLength (bytes)",
+                          "timeContextFromParameter": "TimeRange",
+                          "showExportToExcel": true,
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces",
+                          "crossComponentResources": [
+                            "{Workspace}"
+                          ],
+                          "visualization": "table",
+                          "gridSettings": {
+                            "formatters": [
+                              {
+                                "columnMatch": "count_",
+                                "formatter": 1
+                              },
+                              {
+                                "columnMatch": "avg_DurationMs",
+                                "formatter": 1,
+                                "formatOptions": {
+                                  "aggregation": "Average"
+                                },
+                                "numberFormat": {
+                                  "unit": 0,
+                                  "options": {
+                                    "style": "decimal",
+                                    "maximumFractionDigits": 2
+                                  }
+                                }
+                              }
+                            ],
+                            "filter": true,
+                            "labelSettings": [
+                              {
+                                "columnId": "modelDeploymentName",
+                                "label": "Model Deployment Name"
+                              },
+                              {
+                                "columnId": "modelName",
+                                "label": "Model Name"
+                              },
+                              {
+                                "columnId": "OperationName",
+                                "label": "Operation Name"
+                              },
+                              {
+                                "columnId": "count_",
+                                "label": "Requests"
+                              },
+                              {
+                                "columnId": "avg_requestLength",
+                                "label": "Avg Request Length (bytes)"
+                              }
+                            ]
+                          },
+                          "sortBy": [],
+                          "tileSettings": {
+                            "showBorder": false,
+                            "titleContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "leftContent": {
+                              "columnMatch": "count_",
+                              "formatter": 12,
+                              "formatOptions": {
+                                "palette": "auto"
+                              },
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "graphSettings": {
+                            "type": 0,
+                            "topContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "centerContent": {
+                              "columnMatch": "count_",
+                              "formatter": 1,
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "chartSettings": {
+                            "xSettings": {
+                              "numberFormatSettings": {
+                                "unit": 0,
+                                "options": {
+                                  "style": "decimal",
+                                  "useGrouping": true
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "customWidth": "50",
+                        "name": "query - RequestResponse by Avg requestLength (bytes)"
+                      },
+                      {
+                        "type": 3,
+                        "content": {
+                          "version": "KqlItem/1.0",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend ModelAndOperation = strcat(modelDeploymentName,\" (\",OperationName,\")\")\r\n| extend requestLength=toint(properties.requestLength)\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize avg(requestLength) by tostring(ModelAndOperation)\r\n| sort by tostring(ModelAndOperation) asc",
+                          "size": 0,
+                          "title": "Requests by Avg requestLength (bytes)",
                           "timeContextFromParameter": "TimeRange",
                           "showExportToExcel": true,
                           "queryType": 0,
@@ -3901,7 +4580,191 @@
                           }
                         },
                         "customWidth": "50",
-                        "name": "query - RequestResponse by Avg Duration (ms)"
+                        "name": "query - RequestResponse by Avg requestLength (bytes) | Model Deployment Name (Operation Name)"
+                      },
+                      {
+                        "type": 3,
+                        "content": {
+                          "version": "KqlItem/1.0",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend responseLength=toint(properties.responseLength)\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count(), avg(responseLength) by tostring(modelDeploymentName), tostring(modelName), OperationName\r\n| sort by tostring(modelDeploymentName) asc, OperationName asc\r\n",
+                          "size": 0,
+                          "title": "Requests by Avg responseLength (bytes)",
+                          "timeContextFromParameter": "TimeRange",
+                          "showExportToExcel": true,
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces",
+                          "crossComponentResources": [
+                            "{Workspace}"
+                          ],
+                          "visualization": "table",
+                          "gridSettings": {
+                            "formatters": [
+                              {
+                                "columnMatch": "count_",
+                                "formatter": 1
+                              },
+                              {
+                                "columnMatch": "avg_responseLength",
+                                "formatter": 0,
+                                "numberFormat": {
+                                  "unit": 0,
+                                  "options": {
+                                    "style": "decimal"
+                                  }
+                                }
+                              }
+                            ],
+                            "filter": true,
+                            "labelSettings": [
+                              {
+                                "columnId": "modelDeploymentName",
+                                "label": "Model Deployment Name"
+                              },
+                              {
+                                "columnId": "modelName",
+                                "label": "Model Name"
+                              },
+                              {
+                                "columnId": "OperationName",
+                                "label": "Operation Name"
+                              },
+                              {
+                                "columnId": "count_",
+                                "label": "Requests"
+                              },
+                              {
+                                "columnId": "avg_responseLength",
+                                "label": "Avg Response Length (bytes)"
+                              }
+                            ]
+                          },
+                          "sortBy": [],
+                          "tileSettings": {
+                            "showBorder": false,
+                            "titleContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "leftContent": {
+                              "columnMatch": "count_",
+                              "formatter": 12,
+                              "formatOptions": {
+                                "palette": "auto"
+                              },
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "graphSettings": {
+                            "type": 0,
+                            "topContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "centerContent": {
+                              "columnMatch": "count_",
+                              "formatter": 1,
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "chartSettings": {
+                            "xSettings": {
+                              "numberFormatSettings": {
+                                "unit": 0,
+                                "options": {
+                                  "style": "decimal",
+                                  "useGrouping": true
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "customWidth": "50",
+                        "name": "query - RequestResponse by Avg responseLength (bytes)"
+                      },
+                      {
+                        "type": 3,
+                        "content": {
+                          "version": "KqlItem/1.0",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend ModelAndOperation = strcat(modelDeploymentName,\" (\",OperationName,\")\")\r\n| extend responseLength=toint(properties.responseLength)\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize avg(responseLength) by tostring(ModelAndOperation)\r\n| sort by tostring(ModelAndOperation) asc",
+                          "size": 0,
+                          "title": "Requests by Avg responseLength (bytes)",
+                          "timeContextFromParameter": "TimeRange",
+                          "showExportToExcel": true,
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces",
+                          "crossComponentResources": [
+                            "{Workspace}"
+                          ],
+                          "visualization": "barchart",
+                          "gridSettings": {
+                            "filter": true
+                          },
+                          "sortBy": [],
+                          "tileSettings": {
+                            "showBorder": false,
+                            "titleContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "leftContent": {
+                              "columnMatch": "count_",
+                              "formatter": 12,
+                              "formatOptions": {
+                                "palette": "auto"
+                              },
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "graphSettings": {
+                            "type": 0,
+                            "topContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "centerContent": {
+                              "columnMatch": "count_",
+                              "formatter": 1,
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "chartSettings": {
+                            "xSettings": {
+                              "numberFormatSettings": {
+                                "unit": 0,
+                                "options": {
+                                  "style": "decimal",
+                                  "useGrouping": true
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "customWidth": "50",
+                        "name": "query - RequestResponse by Avg responseLength (bytes) | Model Deployment Name (Operation Name)"
                       }
                     ]
                   },
@@ -3921,7 +4784,7 @@
                       {
                         "type": 1,
                         "content": {
-                          "json": "### By CallerIP\r\nAll operational logs, with the exclusion of administration logs divided by CallerIP Address.",
+                          "json": "### By CallerIP\r\nAll success \"Request / Response\" (Status Code: 200) operational logs, with the exclusion of administration logs divided by CallerIP Address.",
                           "style": "upsell"
                         },
                         "name": "text - Monitor"
@@ -3930,9 +4793,9 @@
                         "type": 3,
                         "content": {
                           "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))  \r\n| summarize count() by CallerIPAddress",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location}) \r\n| summarize count() by CallerIPAddress",
                           "size": 3,
-                          "title": "Request / Response by CallerIP Address",
+                          "title": "Requests by Caller IP Address",
                           "timeContextFromParameter": "TimeRange",
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -3998,79 +4861,13 @@
                         "type": 3,
                         "content": {
                           "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \")) \r\n| summarize avg(DurationMs) by CallerIPAddress",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count(OperationName) by CallerIPAddress, OperationName\r\n| sort by CallerIPAddress",
                           "size": 3,
-                          "title": "Request / Response Avg Duration (ms) by Caller IP Address",
-                          "timeContextFromParameter": "TimeRange",
-                          "queryType": 0,
-                          "resourceType": "microsoft.operationalinsights/workspaces",
-                          "crossComponentResources": [
-                            "{Workspace}"
-                          ],
-                          "visualization": "barchart",
-                          "tileSettings": {
-                            "showBorder": false,
-                            "titleContent": {
-                              "columnMatch": "CallerIPAddress",
-                              "formatter": 1
-                            },
-                            "leftContent": {
-                              "columnMatch": "count_",
-                              "formatter": 12,
-                              "formatOptions": {
-                                "palette": "auto"
-                              },
-                              "numberFormat": {
-                                "unit": 17,
-                                "options": {
-                                  "maximumSignificantDigits": 3,
-                                  "maximumFractionDigits": 2
-                                }
-                              }
-                            }
-                          },
-                          "graphSettings": {
-                            "type": 0,
-                            "topContent": {
-                              "columnMatch": "CallerIPAddress",
-                              "formatter": 1
-                            },
-                            "centerContent": {
-                              "columnMatch": "count_",
-                              "formatter": 1,
-                              "numberFormat": {
-                                "unit": 17,
-                                "options": {
-                                  "maximumSignificantDigits": 3,
-                                  "maximumFractionDigits": 2
-                                }
-                              }
-                            }
-                          },
-                          "chartSettings": {
-                            "xSettings": {
-                              "numberFormatSettings": {
-                                "unit": 0,
-                                "options": {
-                                  "style": "decimal",
-                                  "useGrouping": true
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "customWidth": "70",
-                        "name": "query - RequestResponse Avg Duration (ms) by Caller IP Address"
-                      },
-                      {
-                        "type": 3,
-                        "content": {
-                          "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(modelName) by CallerIPAddress, tostring(modelName), APIOperationName\r\n| sort by CallerIPAddress",
-                          "size": 3,
-                          "title": "Request / Response Model Name + API Operation Name by CallerIP Address",
+                          "title": "Requests | Operation Name by CallerIP Address",
                           "timeContextFromParameter": "TimeRange",
                           "showRefreshButton": true,
+                          "exportFieldName": "CallerIPAddress",
+                          "exportParameterName": "CallerIP",
                           "showExportToExcel": true,
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -4080,19 +4877,22 @@
                           "visualization": "table",
                           "gridSettings": {
                             "filter": true,
-                            "sortBy": [
+                            "labelSettings": [
                               {
-                                "itemKey": "count_modelName",
-                                "sortOrder": 2
+                                "columnId": "CallerIPAddress",
+                                "label": "Caller IP Address"
+                              },
+                              {
+                                "columnId": "OperationName",
+                                "label": "Operation Name"
+                              },
+                              {
+                                "columnId": "count_OperationName",
+                                "label": "Count"
                               }
                             ]
                           },
-                          "sortBy": [
-                            {
-                              "itemKey": "count_modelName",
-                              "sortOrder": 2
-                            }
-                          ],
+                          "sortBy": [],
                           "tileSettings": {
                             "showBorder": false,
                             "titleContent": {
@@ -4145,15 +4945,15 @@
                           }
                         },
                         "customWidth": "50",
-                        "name": "query - RequestResponse Model Name + API Operation Name by CallerIP Address"
+                        "name": "query - RequestResponse Operation Name by CallerIP Address"
                       },
                       {
                         "type": 3,
                         "content": {
                           "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(modelDeploymentName) by CallerIPAddress, tostring(modelDeploymentName), APIOperationName\r\n| sort by CallerIPAddress\r\n",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName),\r\n        requestLength=toint(properties.requestLength),\r\n        responseLength=toint(properties.responseLength)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count(modelDeploymentName), avg(DurationMs), avg(requestLength), avg(responseLength) by CallerIPAddress, tostring(modelDeploymentName), OperationName\r\n| sort by CallerIPAddress\r\n",
                           "size": 3,
-                          "title": "Request / Response Model Deployment Name + API Operation Name by CallerIP Address",
+                          "title": "Requests | Model Deployment Name + Operation Name by CallerIP Address",
                           "timeContextFromParameter": "TimeRange",
                           "showRefreshButton": true,
                           "showExportToExcel": true,
@@ -4164,11 +4964,59 @@
                           ],
                           "visualization": "table",
                           "gridSettings": {
+                            "formatters": [
+                              {
+                                "columnMatch": "count_modelDeploymentName",
+                                "formatter": 1
+                              },
+                              {
+                                "columnMatch": "avg_DurationMs",
+                                "formatter": 1
+                              },
+                              {
+                                "columnMatch": "avg_requestLength",
+                                "formatter": 1
+                              },
+                              {
+                                "columnMatch": "avg_responseLength",
+                                "formatter": 1
+                              }
+                            ],
                             "filter": true,
                             "sortBy": [
                               {
                                 "itemKey": "count_modelDeploymentName",
                                 "sortOrder": 1
+                              }
+                            ],
+                            "labelSettings": [
+                              {
+                                "columnId": "CallerIPAddress",
+                                "label": "Caller IP Address"
+                              },
+                              {
+                                "columnId": "modelDeploymentName",
+                                "label": "Model Deployment Name"
+                              },
+                              {
+                                "columnId": "OperationName",
+                                "label": "Operation Name"
+                              },
+                              {
+                                "columnId": "count_modelDeploymentName",
+                                "label": "Count"
+                              },
+                              {
+                                "columnId": "avg_DurationMs",
+                                "label": "Avg Duration (ms)"
+                              },
+                              {
+                                "columnId": "avg_requestLength",
+                                "label": "Avg Request Length (bytes)"
+                              },
+                              {
+                                "columnId": "avg_responseLength",
+                                "label": "Avg Response Length (bytes)"
                               }
                             ]
                           },
@@ -4229,20 +5077,17 @@
                             }
                           }
                         },
-                        "customWidth": "50",
-                        "name": "query - RequestResponse Model Deployment Name + API Operation Name by CallerIP Address"
+                        "name": "query - RequestResponse Model Deployment Name + Operation Name by CallerIP Address"
                       },
                       {
                         "type": 3,
                         "content": {
                           "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelName=properties.modelName\r\n| extend modelDeploymentName=properties.modelDeploymentName\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n) \r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(APIOperationName) by CallerIPAddress, APIOperationName\r\n| sort by CallerIPAddress",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName),\r\n        requestLength=toint(properties.requestLength),\r\n        responseLength=toint(properties.responseLength)        \r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"200\"\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})\r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})\r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})\r\n| summarize count(modelName), avg(DurationMs), avg(requestLength), avg(responseLength) by CallerIPAddress, tostring(modelName), OperationName\r\n| sort by CallerIPAddress",
                           "size": 3,
-                          "title": "Request / Response API Operation Name by CallerIP Address",
+                          "title": "Requests | Model Name + Operation Name by Caller IP Address",
                           "timeContextFromParameter": "TimeRange",
                           "showRefreshButton": true,
-                          "exportFieldName": "CallerIPAddress",
-                          "exportParameterName": "CallerIP",
                           "showExportToExcel": true,
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
@@ -4251,18 +5096,66 @@
                           ],
                           "visualization": "table",
                           "gridSettings": {
+                            "formatters": [
+                              {
+                                "columnMatch": "count_modelName",
+                                "formatter": 1
+                              },
+                              {
+                                "columnMatch": "avg_DurationMs",
+                                "formatter": 1
+                              },
+                              {
+                                "columnMatch": "avg_requestLength",
+                                "formatter": 1
+                              },
+                              {
+                                "columnMatch": "avg_responseLength",
+                                "formatter": 1
+                              }
+                            ],
                             "filter": true,
                             "sortBy": [
                               {
-                                "itemKey": "count_APIOperationName",
-                                "sortOrder": 1
+                                "itemKey": "count_modelName",
+                                "sortOrder": 2
+                              }
+                            ],
+                            "labelSettings": [
+                              {
+                                "columnId": "CallerIPAddress",
+                                "label": "Caller IP Address"
+                              },
+                              {
+                                "columnId": "modelName",
+                                "label": "Model Name"
+                              },
+                              {
+                                "columnId": "OperationName",
+                                "label": "Operation Name"
+                              },
+                              {
+                                "columnId": "count_modelName",
+                                "label": "Count"
+                              },
+                              {
+                                "columnId": "avg_DurationMs",
+                                "label": "Avg Duration (ms)"
+                              },
+                              {
+                                "columnId": "avg_requestLength",
+                                "label": "Avg Request Length (bytes)"
+                              },
+                              {
+                                "columnId": "avg_responseLength",
+                                "label": "Avg ResponseLength (bytes)"
                               }
                             ]
                           },
                           "sortBy": [
                             {
-                              "itemKey": "count_APIOperationName",
-                              "sortOrder": 1
+                              "itemKey": "count_modelName",
+                              "sortOrder": 2
                             }
                           ],
                           "tileSettings": {
@@ -4316,8 +5209,7 @@
                             }
                           }
                         },
-                        "customWidth": "50",
-                        "name": "query - RequestResponse API Operation Name by CallerIP Address"
+                        "name": "query - RequestResponse Model Name + Operation Name by CallerIP Address"
                       }
                     ]
                   },
@@ -4337,7 +5229,7 @@
                       {
                         "type": 1,
                         "content": {
-                          "json": "### All Logs\r\nAll *\"Request / Response\"* operational logs, with the exclusion of administration logs.",
+                          "json": "### All Successful Requests\r\nAll success *\"Request / Response\"* (Status Code: 200) operational logs, with the exclusion of administration logs.",
                           "style": "upsell"
                         },
                         "name": "text - Monitor"
@@ -4346,10 +5238,10 @@
                         "type": 3,
                         "content": {
                           "version": "KqlItem/1.0",
-                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend APIOperationName = case(\r\nOperationName == \"Creates a completion for the provided prompt, parameters and chosen model.\", \"completions\",\r\nOperationName == \"Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.\", \"embeddings\",\r\nOperationName == \"Creates a completion for the chat message\", \"chat/completions\",\r\nOperationName == \"TBD1\", \"extensions/chat/completions\",\r\nOperationName == \"ImageGenerations_Create\", \"images/generations\",\r\nOperationName == \"TBD2\", \"images/generations:submit\",\r\nOperationName == \"TBD3\", \"audio/transactions\",\r\nOperationName == \"TBD4\", \"audio/translations\",\r\nOperationName\r\n)\r\n| where APIOperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| project\r\n    TimeGenerated,\r\n    Resource,\r\n    modelDeploymentName=properties.modelDeploymentName,\r\n    modelName=properties.modelName,\r\n    APIOperationName,\r\n    OperationName,\r\n    DurationMs,\r\n    CallerIPAddress,\r\n    //Location=location_s,\r\n    Location=Tenant_s,\r\n    apiName=properties.apiName,\r\n    modelVersion=properties.modelVersion,\r\n    //objectId=properties.objectId,\r\n    requestLength=properties.requestLength,\r\n    requestTime=properties.requestTime,\r\n    responseLength=properties.responseLength,\r\n    responseTime=properties.responseTime,\r\n    streamType=properties.streamType\r\n    | sort by TimeGenerated desc",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend modelDeploymentName=tostring(properties.modelDeploymentName),\r\n        modelName=tostring(properties.modelName),\r\n        modelVersion=properties.modelVersion,\r\n        streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName),\r\n        objectId=tostring(properties.objectId)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == 200\r\n    and modelDeploymentName in ({modeldeploymentname})\r\n    and modelName in ({modelname})    \r\n    and modelVersion in ({modelversion})\r\n    and apiVersion in ({apiVersion})\r\n    and OperationName in ({OperationName})    \r\n    and streamType in ({streamtype})\r\n    and location_s in ({location})    \r\n| project\r\n    TimeGenerated,\r\n    Resource,\r\n    modelDeploymentName=properties.modelDeploymentName,\r\n    modelName=properties.modelName,\r\n    OperationName,\r\n    DurationMs,\r\n    requestLength=properties.requestLength,\r\n    responseLength=properties.responseLength,    \r\n    streamType,    \r\n    CallerIPAddress,\r\n    apiVersion,\r\n    modelVersion,\r\n    //requestTime=properties.requestTime,    \r\n    //responseTime=properties.responseTime,\r\n    objectId,\r\n    Location=location_s,\r\n    ResultSignature\r\n    | sort by TimeGenerated desc",
                           "size": 3,
                           "showAnalytics": true,
-                          "title": "All Logs",
+                          "title": "Successful requests",
                           "timeContextFromParameter": "TimeRange",
                           "showRefreshButton": true,
                           "showExportToExcel": true,
@@ -4361,9 +5253,93 @@
                           "visualization": "table",
                           "showExpandCollapseGrid": true,
                           "gridSettings": {
+                            "formatters": [
+                              {
+                                "columnMatch": "DurationMs",
+                                "formatter": 1
+                              },
+                              {
+                                "columnMatch": "Location",
+                                "formatter": 17
+                              }
+                            ],
                             "rowLimit": 500,
-                            "filter": true
-                          }
+                            "filter": true,
+                            "sortBy": [
+                              {
+                                "itemKey": "TimeGenerated",
+                                "sortOrder": 2
+                              }
+                            ],
+                            "labelSettings": [
+                              {
+                                "columnId": "TimeGenerated",
+                                "label": "Time Generated"
+                              },
+                              {
+                                "columnId": "Resource",
+                                "label": "Resource"
+                              },
+                              {
+                                "columnId": "modelDeploymentName",
+                                "label": "Model Deployment Name"
+                              },
+                              {
+                                "columnId": "modelName",
+                                "label": "Model Name"
+                              },
+                              {
+                                "columnId": "OperationName",
+                                "label": "Operation Name"
+                              },
+                              {
+                                "columnId": "DurationMs",
+                                "label": "Duration (ms)"
+                              },
+                              {
+                                "columnId": "requestLength",
+                                "label": "Request Length (bytes)"
+                              },
+                              {
+                                "columnId": "responseLength",
+                                "label": "Response Length (bytes)"
+                              },
+                              {
+                                "columnId": "streamType",
+                                "label": "Stream Type"
+                              },
+                              {
+                                "columnId": "CallerIPAddress",
+                                "label": "Caller IP Address"
+                              },
+                              {
+                                "columnId": "apiVersion",
+                                "label": "Api Version"
+                              },
+                              {
+                                "columnId": "modelVersion",
+                                "label": "Model Version"
+                              },
+                              {
+                                "columnId": "objectId",
+                                "label": "Object Id"
+                              },
+                              {
+                                "columnId": "Location",
+                                "label": "Location"
+                              },
+                              {
+                                "columnId": "ResultSignature",
+                                "label": "Status Code"
+                              }
+                            ]
+                          },
+                          "sortBy": [
+                            {
+                              "itemKey": "TimeGenerated",
+                              "sortOrder": 2
+                            }
+                          ]
                         },
                         "name": "query - insights - All Logs"
                       }
@@ -4375,6 +5351,394 @@
                     "value": "insights-AllLogs"
                   },
                   "name": "group - Insights - All Logs"
+                },
+                {
+                  "type": 12,
+                  "content": {
+                    "version": "NotebookGroup/1.0",
+                    "groupType": "editable",
+                    "items": [
+                      {
+                        "type": 1,
+                        "content": {
+                          "json": "### All failed requests\r\nAll failed *\"Request / Response\"* (Status Code: 404) operational logs, with the exclusion of administration logs.",
+                          "style": "upsell"
+                        },
+                        "name": "text - Monitor"
+                      },
+                      {
+                        "type": 3,
+                        "content": {
+                          "version": "KqlItem/1.0",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend streamType=properties.streamType\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"404\"\r\n    and apiVersion in ({apiVersionFailure})\r\n    and OperationName in ({OperationNameFailure})\r\n    and streamType in ({streamtypeFailure})\r\n    and location_s in ({locationFailure})\r\n| summarize count() by tostring(Resource)",
+                          "size": 3,
+                          "title": "Failed requests by Resource",
+                          "timeContextFromParameter": "TimeRange",
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces",
+                          "crossComponentResources": [
+                            "{Workspace}"
+                          ],
+                          "visualization": "piechart",
+                          "tileSettings": {
+                            "showBorder": false,
+                            "titleContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "leftContent": {
+                              "columnMatch": "count_",
+                              "formatter": 12,
+                              "formatOptions": {
+                                "palette": "auto"
+                              },
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "graphSettings": {
+                            "type": 0,
+                            "topContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "centerContent": {
+                              "columnMatch": "count_",
+                              "formatter": 1,
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "chartSettings": {
+                            "xSettings": {
+                              "numberFormatSettings": {
+                                "unit": 0,
+                                "options": {
+                                  "style": "decimal",
+                                  "useGrouping": true
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "customWidth": "25",
+                        "name": "query - Failed requests by Resource"
+                      },
+                      {
+                        "type": 3,
+                        "content": {
+                          "version": "KqlItem/1.0",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend streamType=properties.streamType\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"404\"\r\n    and apiVersion in ({apiVersionFailure})\r\n    and OperationName in ({OperationNameFailure})\r\n    and streamType in ({streamtypeFailure})\r\n    and location_s in ({locationFailure})\r\n| summarize count() by tostring(apiVersion)",
+                          "size": 3,
+                          "title": "Failed requests by apiVersion",
+                          "timeContextFromParameter": "TimeRange",
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces",
+                          "crossComponentResources": [
+                            "{Workspace}"
+                          ],
+                          "visualization": "piechart",
+                          "tileSettings": {
+                            "showBorder": false,
+                            "titleContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "leftContent": {
+                              "columnMatch": "count_",
+                              "formatter": 12,
+                              "formatOptions": {
+                                "palette": "auto"
+                              },
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "graphSettings": {
+                            "type": 0,
+                            "topContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "centerContent": {
+                              "columnMatch": "count_",
+                              "formatter": 1,
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "chartSettings": {
+                            "xSettings": {
+                              "numberFormatSettings": {
+                                "unit": 0,
+                                "options": {
+                                  "style": "decimal",
+                                  "useGrouping": true
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "customWidth": "25",
+                        "name": "query - Failed requests by apiVersion"
+                      },
+                      {
+                        "type": 3,
+                        "content": {
+                          "version": "KqlItem/1.0",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend streamType=properties.streamType\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"404\"\r\n    and apiVersion in ({apiVersionFailure})\r\n    and OperationName in ({OperationNameFailure})\r\n    and streamType in ({streamtypeFailure})\r\n    and location_s in ({locationFailure})\r\n| summarize count() by tostring(OperationName)",
+                          "size": 3,
+                          "title": "Failed requests by OperationName",
+                          "timeContextFromParameter": "TimeRange",
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces",
+                          "crossComponentResources": [
+                            "{Workspace}"
+                          ],
+                          "visualization": "piechart",
+                          "tileSettings": {
+                            "showBorder": false,
+                            "titleContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "leftContent": {
+                              "columnMatch": "count_",
+                              "formatter": 12,
+                              "formatOptions": {
+                                "palette": "auto"
+                              },
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "graphSettings": {
+                            "type": 0,
+                            "topContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "centerContent": {
+                              "columnMatch": "count_",
+                              "formatter": 1,
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "chartSettings": {
+                            "xSettings": {
+                              "numberFormatSettings": {
+                                "unit": 0,
+                                "options": {
+                                  "style": "decimal",
+                                  "useGrouping": true
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "customWidth": "25",
+                        "name": "query - Failed requests by OperationName"
+                      },
+                      {
+                        "type": 3,
+                        "content": {
+                          "version": "KqlItem/1.0",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend streamType=properties.streamType,\r\n        apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| extend streamType=properties.streamType\r\n| where OperationName !has \"_List\"\r\n    and Resource in~ (split(\"{Resources:label}\", \", \"))\r\n    and ResultSignature == \"404\"\r\n    and apiVersion in ({apiVersionFailure})\r\n    and OperationName in ({OperationNameFailure})\r\n    and streamType in ({streamtypeFailure})\r\n    and location_s in ({locationFailure})\r\n| summarize count() by tostring(streamType)",
+                          "size": 3,
+                          "title": "Failed requests by streamType",
+                          "timeContextFromParameter": "TimeRange",
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces",
+                          "crossComponentResources": [
+                            "{Workspace}"
+                          ],
+                          "visualization": "piechart",
+                          "tileSettings": {
+                            "showBorder": false,
+                            "titleContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "leftContent": {
+                              "columnMatch": "count_",
+                              "formatter": 12,
+                              "formatOptions": {
+                                "palette": "auto"
+                              },
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "graphSettings": {
+                            "type": 0,
+                            "topContent": {
+                              "columnMatch": "CallerIPAddress",
+                              "formatter": 1
+                            },
+                            "centerContent": {
+                              "columnMatch": "count_",
+                              "formatter": 1,
+                              "numberFormat": {
+                                "unit": 17,
+                                "options": {
+                                  "maximumSignificantDigits": 3,
+                                  "maximumFractionDigits": 2
+                                }
+                              }
+                            }
+                          },
+                          "chartSettings": {
+                            "xSettings": {
+                              "numberFormatSettings": {
+                                "unit": 0,
+                                "options": {
+                                  "style": "decimal",
+                                  "useGrouping": true
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "customWidth": "25",
+                        "name": "query - Failed requests by streamType"
+                      },
+                      {
+                        "type": 3,
+                        "content": {
+                          "version": "KqlItem/1.0",
+                          "query": "AzureDiagnostics\r\n| where ResourceProvider == \"MICROSOFT.COGNITIVESERVICES\"\r\n| where Category == \"RequestResponse\"\r\n| extend properties = parse_json(properties_s)\r\n| extend streamType=properties.streamType\r\n| extend apiName=tostring(properties.apiName)\r\n| extend apiVersion = replace_string(apiName, 'Azure OpenAI API version ', '')\r\n| where OperationName !has \"_List\"\r\n| where Resource in~ (split(\"{Resources:label}\", \", \"))\r\n| where toint(ResultSignature) >= 400\r\n| where location_s in ({locationFailure})\r\n| where streamType in ({streamtypeFailure})\r\n| where OperationName in ({OperationNameFailure})\r\n| where apiVersion in ({apiVersionFailure})\r\n| project\r\n    TimeGenerated,\r\n    Resource,\r\n    OperationName,\r\n    DurationMs,\r\n    requestLength=properties.requestLength,\r\n    responseLength=properties.responseLength,    \r\n    streamType=properties.streamType,    \r\n    CallerIPAddress,\r\n    apiVersion,\r\n    Location=location_s,\r\n    ResultSignature\r\n    | sort by TimeGenerated desc",
+                          "size": 3,
+                          "showAnalytics": true,
+                          "title": "Failed requests",
+                          "timeContextFromParameter": "TimeRange",
+                          "showRefreshButton": true,
+                          "showExportToExcel": true,
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces",
+                          "crossComponentResources": [
+                            "{Workspace}"
+                          ],
+                          "visualization": "table",
+                          "showExpandCollapseGrid": true,
+                          "gridSettings": {
+                            "formatters": [
+                              {
+                                "columnMatch": "DurationMs",
+                                "formatter": 1
+                              },
+                              {
+                                "columnMatch": "Location",
+                                "formatter": 17
+                              }
+                            ],
+                            "rowLimit": 500,
+                            "filter": true,
+                            "sortBy": [
+                              {
+                                "itemKey": "TimeGenerated",
+                                "sortOrder": 2
+                              }
+                            ],
+                            "labelSettings": [
+                              {
+                                "columnId": "TimeGenerated",
+                                "label": "Time Generated"
+                              },
+                              {
+                                "columnId": "Resource",
+                                "label": "Resource"
+                              },
+                              {
+                                "columnId": "OperationName",
+                                "label": "Operation Name"
+                              },
+                              {
+                                "columnId": "DurationMs",
+                                "label": "Duration (ms)"
+                              },
+                              {
+                                "columnId": "requestLength",
+                                "label": "Request Length (bytes)"
+                              },
+                              {
+                                "columnId": "responseLength",
+                                "label": "Response Length (bytes)"
+                              },
+                              {
+                                "columnId": "streamType",
+                                "label": "Stream Type"
+                              },
+                              {
+                                "columnId": "CallerIPAddress",
+                                "label": "Caller IP Address"
+                              },
+                              {
+                                "columnId": "apiVersion",
+                                "label": "Api Version"
+                              },
+                              {
+                                "columnId": "Location",
+                                "label": "Location"
+                              },
+                              {
+                                "columnId": "ResultSignature",
+                                "label": "Status Code"
+                              }
+                            ]
+                          },
+                          "sortBy": [
+                            {
+                              "itemKey": "TimeGenerated",
+                              "sortOrder": 2
+                            }
+                          ]
+                        },
+                        "name": "query - insights - Failures"
+                      }
+                    ]
+                  },
+                  "conditionalVisibility": {
+                    "parameterName": "insightsTab",
+                    "comparison": "isEqualTo",
+                    "value": "insights-Failures"
+                  },
+                  "name": "group - Insights - Failures"
                 }
               ]
             },
