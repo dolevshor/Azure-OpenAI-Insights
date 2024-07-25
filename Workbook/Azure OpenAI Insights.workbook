@@ -1077,7 +1077,7 @@
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
-                              "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilization",
+                              "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilizationV2",
                               "aggregation": 4
                             }
                           ],
@@ -2492,7 +2492,7 @@
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
-                              "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilization",
+                              "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilizationV2",
                               "aggregation": 4,
                               "splitBy": "ModelName"
                             }
@@ -2570,7 +2570,7 @@
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
-                              "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilization",
+                              "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilizationV2",
                               "aggregation": 4,
                               "splitBy": "ModelVersion"
                             }
@@ -2648,7 +2648,7 @@
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
-                              "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilization",
+                              "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilizationV2",
                               "aggregation": 4,
                               "splitBy": "ModelDeploymentName"
                             }
@@ -2726,7 +2726,7 @@
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
-                              "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilization",
+                              "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilizationV2",
                               "aggregation": 4,
                               "splitBy": "StreamType"
                             }
