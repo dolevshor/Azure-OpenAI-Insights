@@ -46,15 +46,25 @@ Types of views this workbook provides:
     - Generated Completions Tokens
     - Processed FineTuned Training Hours
     - Provisioned-managed Utilization
+    - Active Tokens
+    - Prompt Token Cache Match Rate
+    - Time to Response
   - HTTP Requests
-    - by Model Name
-    - by Model Version
-    - by Model Deployment Name
-    - by Status Code
-    - by StreamType
-    - by Operation Name
-    - by API Name
-    - by Region
+    - Requests
+      - by Model Name
+      - by Model Version
+      - by Model Deployment Name
+      - by Status Code
+      - by StreamType
+      - by Operation Name
+      - by API Name
+      - by Region
+    - Time to Response
+      - by Model Name
+      - by Model Deployment Name
+    - Prompt Token Cache Match Rate
+      - by Model Name
+      - by Model Deployment Name
   - Token-Based Usage
     - Processed Inference Tokens
       - by Model Name
