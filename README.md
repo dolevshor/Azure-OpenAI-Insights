@@ -72,7 +72,7 @@ Types of views this workbook provides:
     - Processed Prompt Tokens
       - by Model Name
       - by Model Deployment Name
-    - Generate Completitions Tokens
+    - Generate Completion Tokens
       - by Model Name
       - by Model Deployment Name
     - Active Tokens
@@ -84,6 +84,7 @@ Types of views this workbook provides:
       - Model Version
       - by Model Deployment Name
       - by StreamType
+      - by Region
   - Fine-tuning
     - Processed FineTuned Training Hours
       - by Model Name
