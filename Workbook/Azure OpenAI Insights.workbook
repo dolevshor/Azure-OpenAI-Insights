@@ -64,7 +64,7 @@
             "queryType": 1,
             "resourceType": "microsoft.resourcegraph/resources",
             "value": [
-              "/subscriptions/1e4c34d3-4bac-4489-bc82-fb1fb69abf3f/resourceGroups/OpenAI-Demo1/providers/Microsoft.CognitiveServices/accounts/OpenAI-Demo1"
+              "value::all"
             ]
           },
           {
@@ -3073,13 +3073,16 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 2592000000
+                            "durationMs": 0
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilizationV2",
-                              "aggregation": 4
+                              "aggregation": 4,
+                              "splitBy": [
+                                "ModelName"
+                              ]
                             }
                           ],
                           "title": "Provisioned-managed Utilization by Model Name",
@@ -3150,13 +3153,16 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 2592000000
+                            "durationMs": 0
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilizationV2",
-                              "aggregation": 4
+                              "aggregation": 4,
+                              "splitBy": [
+                                "ModelVersion"
+                              ]
                             }
                           ],
                           "title": "Provisioned-managed Utilization by Model Version",
@@ -3227,13 +3233,16 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 2592000000
+                            "durationMs": 0
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilizationV2",
-                              "aggregation": 4
+                              "aggregation": 4,
+                              "splitBy": [
+                                "ModelDeploymentName"
+                              ]
                             }
                           ],
                           "title": "Provisioned-managed Utilization by Model Deployment Name",
@@ -3304,13 +3313,16 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 2592000000
+                            "durationMs": 0
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilizationV2",
-                              "aggregation": 4
+                              "aggregation": 4,
+                              "splitBy": [
+                                "StreamType"
+                              ]
                             }
                           ],
                           "title": "Provisioned-managed Utilization by StreamType",
@@ -3362,6 +3374,86 @@
                         "customWidth": "50",
                         "showPin": false,
                         "name": "Metric - Provisioned-managed Utilization by StreamType",
+                        "styleSettings": {
+                          "margin": "0 0 20px 0"
+                        }
+                      },
+                      {
+                        "type": 10,
+                        "content": {
+                          "chartId": "workbook44a06433-82ec-44c1-8731-83e8a22cd995",
+                          "version": "MetricsItem/2.0",
+                          "size": 0,
+                          "chartType": 2,
+                          "resourceType": "microsoft.cognitiveservices/accounts",
+                          "metricScope": 0,
+                          "resourceParameter": "Resources",
+                          "resourceIds": [
+                            "{Resources}"
+                          ],
+                          "timeContextFromParameter": "TimeRange",
+                          "timeContext": {
+                            "durationMs": 0
+                          },
+                          "metrics": [
+                            {
+                              "namespace": "microsoft.cognitiveservices/accounts",
+                              "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-AzureOpenAIProvisionedManagedUtilizationV2",
+                              "aggregation": 4,
+                              "splitBy": [
+                                "Region"
+                              ]
+                            }
+                          ],
+                          "title": "Provisioned-managed Utilization by Region",
+                          "showOpenInMe": true,
+                          "showCreateAlertRule": true,
+                          "gridSettings": {
+                            "formatters": [
+                              {
+                                "columnMatch": "Subscription",
+                                "formatter": 5
+                              },
+                              {
+                                "columnMatch": "Name",
+                                "formatter": 13,
+                                "formatOptions": {
+                                  "linkTarget": "Resource"
+                                }
+                              },
+                              {
+                                "columnMatch": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIRequests Timeline",
+                                "formatter": 5
+                              },
+                              {
+                                "columnMatch": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIRequests",
+                                "formatter": 1,
+                                "numberFormat": {
+                                  "unit": 0,
+                                  "options": null
+                                }
+                              }
+                            ],
+                            "rowLimit": 10000,
+                            "labelSettings": [
+                              {
+                                "columnId": "Subscription",
+                                "label": "Subscription"
+                              },
+                              {
+                                "columnId": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIRequests",
+                                "label": "Azure OpenAI Requests (Sum)"
+                              },
+                              {
+                                "columnId": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIRequests Timeline",
+                                "label": "Azure OpenAI Requests Timeline"
+                              }
+                            ]
+                          }
+                        },
+                        "customWidth": "50",
+                        "showPin": false,
+                        "name": "Metric - Provisioned-managed Utilization by Region",
                         "styleSettings": {
                           "margin": "0 0 20px 0"
                         }
