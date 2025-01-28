@@ -6,15 +6,12 @@
       "content": {
         "json": "# Azure OpenAI Insights\r\nUse this workbook to analyze and monitor all your Azure OpenAI resources."
       },
-      "name": "text - 3"
+      "name": "text - Title"
     },
     {
       "type": 9,
       "content": {
         "version": "KqlParameterItem/1.0",
-        "crossComponentResources": [
-          "{Subscription}"
-        ],
         "parameters": [
           {
             "id": "1f74ed9a-e3ed-498d-bd5b-f68f3836a117",
@@ -27,7 +24,7 @@
             "multiSelect": true,
             "quote": "'",
             "delimiter": ",",
-            "query": "Resources\r\n| where type =~ 'microsoft.cognitiveservices/accounts'\r\n| summarize Count = count() by subscriptionId\r\n| order by Count desc\r\n| extend Rank = row_number()\r\n| project value = subscriptionId, label = subscriptionId, selected = Rank == 1",
+            "query": "Resources\r\n| where type =~ \"microsoft.cognitiveservices/accounts\"\r\n| where kind =~ \"OpenAI\"\r\n| summarize Count = count() by subscriptionId\r\n| order by Count desc\r\n| extend Rank = row_number()\r\n| project value = subscriptionId, label = subscriptionId, selected = Rank == 1",
             "crossComponentResources": [
               "value::selected"
             ],
@@ -50,7 +47,7 @@
             "multiSelect": true,
             "quote": "'",
             "delimiter": ",",
-            "query": "Resources\r\n| where type =~ 'microsoft.cognitiveservices/accounts'\r\n| where kind =~ 'OpenAI'\r\n| order by name asc\r\n| extend Rank = row_number()\r\n| project value = id, label = id, selected = Rank <= 5",
+            "query": "Resources\r\n| where type =~ \"microsoft.cognitiveservices/accounts\"\r\n| where kind =~ \"OpenAI\"\r\n| order by name asc\r\n| extend Rank = row_number()\r\n| project value = id, label = id, selected = Rank <= 5",
             "crossComponentResources": [
               "{Subscription}"
             ],
@@ -62,10 +59,7 @@
             },
             "defaultValue": "value::all",
             "queryType": 1,
-            "resourceType": "microsoft.resourcegraph/resources",
-            "value": [
-              "value::all"
-            ]
+            "resourceType": "microsoft.resourcegraph/resources"
           },
           {
             "id": "c4b69c01-2263-4ada-8d9c-43433b739ff3",
@@ -162,7 +156,7 @@
           }
         ],
         "style": "above",
-        "queryType": 1,
+        "queryType": 0,
         "resourceType": "microsoft.resourcegraph/resources"
       },
       "name": "parameters - 1",
@@ -222,7 +216,7 @@
                 }
               ]
             },
-            "name": "Navigation links",
+            "name": "links - Navigation links",
             "styleSettings": {
               "margin": "10px 0 0 0"
             }
@@ -239,13 +233,13 @@
                     "json": "### Azure OpenAI Insights Workbook\r\n\r\nThe purpose of this workbook is to provide an overview of your Azure OpenAI resources.\r\n\r\n<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"19px\" height=\"19px\" viewBox=\"0 0 19 18\" version=\"1.1\"><g id=\"surface1\"><path style=\" stroke:none;fill-rule:evenodd;fill:rgb(14.117647%,16.078431%,18.431373%);fill-opacity:1;\" d=\"M 9.472656 0 C 4.234375 0 0 4.125 0 9.226562 C 0 13.308594 2.714844 16.761719 6.476562 17.984375 C 6.945312 18.074219 7.121094 17.785156 7.121094 17.539062 C 7.121094 17.324219 7.105469 16.59375 7.105469 15.828125 C 4.46875 16.378906 3.921875 14.726562 3.921875 14.726562 C 3.496094 13.660156 2.871094 13.382812 2.871094 13.382812 C 2.007812 12.820312 2.933594 12.820312 2.933594 12.820312 C 3.890625 12.878906 4.390625 13.765625 4.390625 13.765625 C 5.238281 15.171875 6.601562 14.773438 7.152344 14.53125 C 7.230469 13.933594 7.480469 13.519531 7.746094 13.292969 C 5.644531 13.078125 3.433594 12.285156 3.433594 8.738281 C 3.433594 7.730469 3.808594 6.90625 4.40625 6.265625 C 4.3125 6.035156 3.984375 5.085938 4.5 3.820312 C 4.5 3.820312 5.300781 3.574219 7.105469 4.765625 C 7.875 4.566406 8.671875 4.460938 9.472656 4.460938 C 10.269531 4.460938 11.085938 4.566406 11.839844 4.765625 C 13.644531 3.574219 14.441406 3.820312 14.441406 3.820312 C 14.960938 5.085938 14.628906 6.035156 14.535156 6.265625 C 15.148438 6.90625 15.507812 7.730469 15.507812 8.738281 C 15.507812 12.285156 13.296875 13.0625 11.179688 13.292969 C 11.527344 13.582031 11.824219 14.132812 11.824219 15.003906 C 11.824219 16.242188 11.808594 17.234375 11.808594 17.539062 C 11.808594 17.785156 11.980469 18.074219 12.453125 17.984375 C 16.214844 16.761719 18.925781 13.308594 18.925781 9.226562 C 18.941406 4.125 14.695312 0 9.472656 0 Z M 9.472656 0 \"/></g></svg>\r\n&nbsp;[<span style=\"font-family: Open Sans; font-weight: 620; font-size: 14px;margin:-10px 0px 0px 0px;position: relative;top:-3px;left:-4px;\">Please submit any issues </span>](https://github.com/dolevshor/Azure-OpenAI-Insights/issues) <span style=\"font-family: Open Sans; font-weight: 620; font-size: 14px;margin:-10px 0px 0px 0px;position: relative;top:-3px;left:-4px;\"> with the workbook template to GitHub.</span>",
                     "style": "upsell"
                   },
-                  "name": "Monitor Title - Copy"
+                  "name": "text - Overview Title"
                 },
                 {
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "resources\r\n| where type == \"microsoft.cognitiveservices/accounts\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(type) by subscriptionId",
+                    "query": "resources\r\n| where type =~ \"microsoft.cognitiveservices/accounts\"\r\n| where kind =~ \"OpenAI\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(type) by subscriptionId",
                     "size": 3,
                     "title": "Count by Subscription Id",
                     "queryType": 1,
@@ -262,7 +256,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "resources\r\n| where type == \"microsoft.cognitiveservices/accounts\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(type) by resourceGroup",
+                    "query": "resources\r\n| where type =~ \"microsoft.cognitiveservices/accounts\"\r\n| where kind =~ \"OpenAI\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(type) by resourceGroup",
                     "size": 3,
                     "title": "Count by Resource Group",
                     "queryType": 1,
@@ -318,7 +312,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "resources\r\n| where type == \"microsoft.cognitiveservices/accounts\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(type) by location",
+                    "query": "resources\r\n| where type =~ \"microsoft.cognitiveservices/accounts\"\r\n| where kind =~ \"OpenAI\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(type) by location",
                     "size": 3,
                     "title": "Count by Location",
                     "queryType": 1,
@@ -335,7 +329,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "resources\r\n| where type == \"microsoft.cognitiveservices/accounts\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(type) by kind",
+                    "query": "resources\r\n| where type == \"microsoft.cognitiveservices/accounts\"\r\n| where kind =~ \"OpenAI\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(type) by kind",
                     "size": 3,
                     "title": "Count by Kind",
                     "queryType": 1,
@@ -352,7 +346,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "resources\r\n| where type == \"microsoft.cognitiveservices/accounts\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(type) by tostring(properties.publicNetworkAccess)",
+                    "query": "resources\r\n| where type == \"microsoft.cognitiveservices/accounts\"\r\n| where kind =~ \"OpenAI\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| summarize count(type) by tostring(properties.publicNetworkAccess)",
                     "size": 3,
                     "title": "Count by Public Network Access",
                     "queryType": 1,
@@ -390,7 +384,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "resources\r\n| where type == \"microsoft.cognitiveservices/accounts\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| extend privateEndpointConnections = properties.privateEndpointConnections\r\n| extend privateEndpointConnections = iff(privateEndpointConnections == '[]','Disabled','Enabled')\r\n| summarize count(type) by tostring(privateEndpointConnections)",
+                    "query": "resources\r\n| where type =~ \"microsoft.cognitiveservices/accounts\"\r\n| where kind =~ \"OpenAI\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| extend privateEndpointConnections = properties.privateEndpointConnections\r\n| extend privateEndpointConnections = iff(privateEndpointConnections == '[]','Disabled','Enabled')\r\n| summarize count(type) by tostring(privateEndpointConnections)",
                     "size": 3,
                     "title": "Count by Private Network Access",
                     "queryType": 1,
@@ -407,7 +401,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "resources\r\n| where type == \"microsoft.cognitiveservices/accounts\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| extend Details = pack_all()\r\n| project Resource=id, resourceGroup, location, subscriptionId, kind, SKU=sku.name, publicNetworkAccess=properties.publicNetworkAccess, privateEndpointConnections=properties.privateEndpointConnections, dateCreated=properties.dateCreated, tags, Details",
+                    "query": "resources\r\n| where type =~ \"microsoft.cognitiveservices/accounts\"\r\n| where kind =~ \"OpenAI\"\r\n| where name in~ (split(\"{Resources:label}\", \", \"))\r\n| extend Details = pack_all()\r\n| project Resource=id, resourceGroup, location, subscriptionId, kind, SKU=sku.name, publicNetworkAccess=properties.publicNetworkAccess, privateEndpointConnections=properties.privateEndpointConnections, dateCreated=properties.dateCreated, tags, Details",
                     "size": 3,
                     "title": "Azure OpenAI",
                     "noDataMessage": "No Azure OpenAI resources found.",
@@ -589,7 +583,7 @@
                       }
                     }
                   },
-                  "name": "query - Azure OpenAI"
+                  "name": "query - All Azure OpenAI"
                 }
               ]
             },
@@ -598,7 +592,7 @@
               "comparison": "isEqualTo",
               "value": "Overview"
             },
-            "name": "Overview Group"
+            "name": "group - Overview"
           },
           {
             "type": 12,
@@ -669,7 +663,7 @@
                           "json": "### Azure OpenAI Metrics Dashboard\r\nExplore the most important metrics for Azure OpenAI Service and understand your usage trends easily.\r\n[Azure OpenAI Metrics](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/monitoring#azure-openai-metrics)",
                           "style": "upsell"
                         },
-                        "name": "text - Monitor"
+                        "name": "text - Monitor Title"
                       },
                       {
                         "type": 10,
@@ -1429,7 +1423,7 @@
                           "json": "#### Metrics Description\r\n- **Azure OpenAI Requests**: Number of calls made to the Azure OpenAI API over a period of time. (Applies to PTU, PTU-Managed and Pay-as-you-go deployments)\r\n- **Time to Response**: Recommended latency (responsiveness) measure for streaming requests. Calculated as time taken for the first response to appear after a user sends a prompt, as measured by the API gateway. This number increases as the prompt size increases and/or cache hit size reduces. (Applies to PTU and PTU-managed deployments)\r\n- **Prompt Token Cache Match Rate**: Percentage of the prompt tokens hit the cache,. (Applies to PTU-managed)",
                           "style": "upsell"
                         },
-                        "name": "title - HTTP-Requests - Metric Description"
+                        "name": "text - HTTP-Requests - Metric Description"
                       },
                       {
                         "type": 10,
@@ -1453,7 +1447,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIRequests",
                               "aggregation": 7,
-                              "splitBy": "ModelName"
+                              "splitBy": [
+                                "ModelName"
+                              ]
                             }
                           ],
                           "title": "Requests by Model Name",
@@ -1531,7 +1527,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIRequests",
                               "aggregation": 7,
-                              "splitBy": "ModelVersion"
+                              "splitBy": [
+                                "ModelVersion"
+                              ]
                             }
                           ],
                           "title": "Requests by Model Version",
@@ -1631,7 +1629,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIRequests",
                               "aggregation": 7,
-                              "splitBy": "ModelDeploymentName"
+                              "splitBy": [
+                                "ModelDeploymentName"
+                              ]
                             }
                           ],
                           "title": "Requests by Model Deployment Name",
@@ -1709,7 +1709,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIRequests",
                               "aggregation": 7,
-                              "splitBy": "StatusCode"
+                              "splitBy": [
+                                "StatusCode"
+                              ]
                             }
                           ],
                           "title": "Requests by Status Code",
@@ -1787,7 +1789,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIRequests",
                               "aggregation": 7,
-                              "splitBy": "StreamType"
+                              "splitBy": [
+                                "StreamType"
+                              ]
                             }
                           ],
                           "title": "Requests by StreamType",
@@ -1865,7 +1869,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIRequests",
                               "aggregation": 7,
-                              "splitBy": "OperationName"
+                              "splitBy": [
+                                "OperationName"
+                              ]
                             }
                           ],
                           "title": "Requests by Operation Name",
@@ -1943,7 +1949,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIRequests",
                               "aggregation": 7,
-                              "splitBy": "ApiName"
+                              "splitBy": [
+                                "ApiName"
+                              ]
                             }
                           ],
                           "title": "Requests by API Name",
@@ -2021,7 +2029,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIRequests",
                               "aggregation": 7,
-                              "splitBy": "Region"
+                              "splitBy": [
+                                "Region"
+                              ]
                             }
                           ],
                           "title": "Requests by by Region",
@@ -2099,7 +2109,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAITimeToResponse",
                               "aggregation": 4,
-                              "splitBy": "ModelName"
+                              "splitBy": [
+                                "ModelName"
+                              ]
                             }
                           ],
                           "title": "Time to Response by Model Name",
@@ -2177,7 +2189,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAITimeToResponse",
                               "aggregation": 4,
-                              "splitBy": "ModelDeploymentName"
+                              "splitBy": [
+                                "ModelDeploymentName"
+                              ]
                             }
                           ],
                           "title": "Time to Response by Model Deployment Name",
@@ -2255,7 +2269,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIContextTokensCacheMatchRate",
                               "aggregation": 4,
-                              "splitBy": "ModelName"
+                              "splitBy": [
+                                "ModelName"
+                              ]
                             }
                           ],
                           "title": "Prompt Token Cache Match Rate by Model Name",
@@ -2333,7 +2349,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  HTTP Requests-AzureOpenAIContextTokensCacheMatchRate",
                               "aggregation": 4,
-                              "splitBy": "ModelDeploymentName"
+                              "splitBy": [
+                                "ModelDeploymentName"
+                              ]
                             }
                           ],
                           "title": "Prompt Token Cache Match Rate by Model Deployment Name ",
@@ -2410,7 +2428,7 @@
                           "json": "### Metrics Description\r\n- **Processed Inference Tokens**: Number of inference tokens processed on an OpenAI model. Calculated as prompt tokens (input) plus generated tokens (output).\r\n- **Processed Prompt Tokens**: Number of prompt tokens processed (input) on an OpenAI model.\r\n- **Generated Completion Tokens**: Number of tokens generated (output) from an OpenAI model.\r\n- **Active tokens**: Total tokens minus cached tokens over a period of time.\r\n  - Use this metric to understand your TPS or TPM based utilization for PTUs and compare to your benchmarks for target TPS or TPM for your scenarios.\r\n\r\n> All Metrics applies to PTU, PTU-Managed and Pay-as-you-go deployments.",
                           "style": "upsell"
                         },
-                        "name": "text - 6"
+                        "name": "text - Token-Based Usage - Metric Description"
                       },
                       {
                         "type": 10,
@@ -2434,7 +2452,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-TokenTransaction",
                               "aggregation": 1,
-                              "splitBy": "FeatureName"
+                              "splitBy": [
+                                "FeatureName"
+                              ]
                             }
                           ],
                           "title": "Processed Inference Tokens by Model Name",
@@ -2512,7 +2532,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-TokenTransaction",
                               "aggregation": 1,
-                              "splitBy": "ModelDeploymentName"
+                              "splitBy": [
+                                "ModelDeploymentName"
+                              ]
                             }
                           ],
                           "title": "Processed Inference Tokens by Model Deployment Name",
@@ -2590,7 +2612,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-ProcessedPromptTokens",
                               "aggregation": 1,
-                              "splitBy": "FeatureName"
+                              "splitBy": [
+                                "FeatureName"
+                              ]
                             }
                           ],
                           "title": "Processed Prompt Tokens by Model Name",
@@ -2745,7 +2769,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-GeneratedTokens",
                               "aggregation": 1,
-                              "splitBy": "FeatureName"
+                              "splitBy": [
+                                "FeatureName"
+                              ]
                             }
                           ],
                           "title": "Generate Completion Tokens by Model Name",
@@ -2823,7 +2849,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-GeneratedTokens",
                               "aggregation": 1,
-                              "splitBy": "ModelDeploymentName"
+                              "splitBy": [
+                                "ModelDeploymentName"
+                              ]
                             }
                           ],
                           "title": "Generate Completion Tokens by Model Deployment Name",
@@ -2901,7 +2929,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-ActiveTokens",
                               "aggregation": 1,
-                              "splitBy": "ModelName"
+                              "splitBy": [
+                                "ModelName"
+                              ]
                             }
                           ],
                           "title": "Active Tokens by Model Name",
@@ -2979,7 +3009,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-ActiveTokens",
                               "aggregation": 1,
-                              "splitBy": "ModelDeploymentName"
+                              "splitBy": [
+                                "ModelDeploymentName"
+                              ]
                             }
                           ],
                           "title": "Active Tokens by Model Deployment Name",
@@ -3056,7 +3088,7 @@
                           "json": "#### Metrics Description\r\n- **Provisioned-Managed Utilization**: Utilization % for a provisoned-managed deployment, calculated as (PTUs consumed / PTUs deployed) x 100.\r\n  - When utilization is greater than or equal to 100%, calls are throttled and error code 429 returned.",
                           "style": "upsell"
                         },
-                        "name": "Monitor Title - Copy"
+                        "name": "text - PTU Utilization - Metric Description"
                       },
                       {
                         "type": 10,
@@ -3073,7 +3105,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -3153,7 +3185,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -3233,7 +3265,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -3313,7 +3345,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -3393,7 +3425,7 @@
                           ],
                           "timeContextFromParameter": "TimeRange",
                           "timeContext": {
-                            "durationMs": 0
+                            "durationMs": 2592000000
                           },
                           "metrics": [
                             {
@@ -3479,7 +3511,7 @@
                           "json": "#### Metrics Description\r\n- **Processed FineTuned Training Hours**: Number of training hours processed on an OpenAI finetuned model.",
                           "style": "upsell"
                         },
-                        "name": "Monitor Title - Copy"
+                        "name": "text - Fine-tuning - Metric Description"
                       },
                       {
                         "type": 10,
@@ -3503,7 +3535,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-FineTunedTrainingHours",
                               "aggregation": 7,
-                              "splitBy": "FeatureName"
+                              "splitBy": [
+                                "FeatureName"
+                              ]
                             }
                           ],
                           "title": "Processed FineTuned Training Hours by Model Name",
@@ -3581,7 +3615,9 @@
                               "namespace": "microsoft.cognitiveservices/accounts",
                               "metric": "microsoft.cognitiveservices/accounts-Azure OpenAI  Usage-FineTunedTrainingHours",
                               "aggregation": 7,
-                              "splitBy": "ModelDeploymentName"
+                              "splitBy": [
+                                "ModelDeploymentName"
+                              ]
                             }
                           ],
                           "title": "Processed FineTuned Training Hours by Model Deployment Name",
@@ -3653,7 +3689,7 @@
               "comparison": "isEqualTo",
               "value": "Monitor"
             },
-            "name": "Monitor Group"
+            "name": "group - Monitor"
           },
           {
             "type": 12,
@@ -3708,45 +3744,73 @@
                   "content": {
                     "version": "KqlParameterItem/1.0",
                     "crossComponentResources": [
-                      "{Workspace}"
+                      "{SubscriptionLA}"
                     ],
                     "parameters": [
+                      {
+                        "id": "4d871b60-84e9-4fe8-8cb8-13d7e11fc93e",
+                        "version": "KqlParameterItem/1.0",
+                        "name": "SubscriptionLA",
+                        "label": "Workspace Subscriptions",
+                        "type": 6,
+                        "description": "All subscriptions with Azure Log Analytics Workspace",
+                        "isRequired": true,
+                        "multiSelect": true,
+                        "quote": "'",
+                        "delimiter": ",",
+                        "query": "Resources\r\n| where type =~ \"microsoft.operationalinsights/workspaces\"\r\n| summarize Count = count() by subscriptionId\r\n| order by Count desc\r\n| extend Rank = row_number()\r\n| project value = subscriptionId, label = subscriptionId, selected = Rank == 1",
+                        "crossComponentResources": [
+                          "value::all"
+                        ],
+                        "typeSettings": {
+                          "additionalResourceOptions": [
+                            "value::all"
+                          ],
+                          "showDefault": false
+                        },
+                        "timeContext": {
+                          "durationMs": 0
+                        },
+                        "timeContextFromParameter": "TimeRange",
+                        "queryType": 1,
+                        "resourceType": "microsoft.resourcegraph/resources"
+                      },
                       {
                         "id": "9ffb6564-df12-41cc-b55d-495e7855d606",
                         "version": "KqlParameterItem/1.0",
                         "name": "Workspace",
                         "label": "Log Analytics Workspace",
                         "type": 5,
+                        "description": "Log Analytics Workspace(s) with Azure OpenAI logs",
                         "isRequired": true,
                         "multiSelect": true,
                         "quote": "'",
                         "delimiter": ",",
-                        "query": "where type =~ 'microsoft.operationalinsights/workspaces'\r\n| project id",
+                        "query": "where type =~ \"microsoft.operationalinsights/workspaces\"\r\n| project id",
                         "crossComponentResources": [
-                          "{Subscription}"
+                          "{SubscriptionLA}"
                         ],
                         "typeSettings": {
                           "resourceTypeFilter": {
                             "microsoft.operationalinsights/workspaces": true
                           },
-                          "additionalResourceOptions": [],
+                          "additionalResourceOptions": [
+                            "value::all"
+                          ],
                           "showDefault": false
                         },
                         "timeContext": {
                           "durationMs": 86400000
                         },
                         "queryType": 1,
-                        "resourceType": "microsoft.resourcegraph/resources",
-                        "value": [
-                          "/subscriptions/1e4c34d3-4bac-4489-bc82-fb1fb69abf3f/resourceGroups/Monitor-RG/providers/Microsoft.OperationalInsights/workspaces/la-doshorcsx"
-                        ]
+                        "resourceType": "microsoft.resourcegraph/resources"
                       }
                     ],
-                    "style": "pills",
-                    "queryType": 0,
-                    "resourceType": "microsoft.operationalinsights/workspaces"
+                    "style": "above",
+                    "queryType": 1,
+                    "resourceType": "microsoft.resourcegraph/resources"
                   },
-                  "name": "parameters - Log Analytics Workspace"
+                  "name": "parameters - Insights"
                 },
                 {
                   "type": 9,
@@ -3782,10 +3846,7 @@
                         "timeContextFromParameter": "TimeRange",
                         "defaultValue": "value::all",
                         "queryType": 0,
-                        "resourceType": "microsoft.operationalinsights/workspaces",
-                        "value": [
-                          "value::all"
-                        ]
+                        "resourceType": "microsoft.operationalinsights/workspaces"
                       },
                       {
                         "id": "6174e5f6-deff-412d-891a-0f681c2fffd5",
@@ -3813,10 +3874,7 @@
                         "timeContextFromParameter": "TimeRange",
                         "defaultValue": "value::all",
                         "queryType": 0,
-                        "resourceType": "microsoft.operationalinsights/workspaces",
-                        "value": [
-                          "value::all"
-                        ]
+                        "resourceType": "microsoft.operationalinsights/workspaces"
                       },
                       {
                         "id": "fe5605b0-a404-4251-9449-a2f92a8cd6ca",
@@ -3974,7 +4032,7 @@
                     "comparison": "isNotEqualTo",
                     "value": "insights-Failures"
                   },
-                  "name": "parameters - Filters"
+                  "name": "parameters - Insights Filters"
                 },
                 {
                   "type": 9,
@@ -4010,10 +4068,7 @@
                         "timeContextFromParameter": "TimeRange",
                         "defaultValue": "value::all",
                         "queryType": 0,
-                        "resourceType": "microsoft.operationalinsights/workspaces",
-                        "value": [
-                          "value::all"
-                        ]
+                        "resourceType": "microsoft.operationalinsights/workspaces"
                       },
                       {
                         "id": "291ed2f3-a2c1-4d91-9d12-b98b845b8cab",
@@ -4114,7 +4169,7 @@
                     "comparison": "isEqualTo",
                     "value": "insights-Failures"
                   },
-                  "name": "parameters - Filters-Failures"
+                  "name": "parameters - Insights Filters-Failures"
                 },
                 {
                   "type": 12,
@@ -4128,7 +4183,7 @@
                           "json": "### Azure OpenAI Logs Dashboard\r\nExplore the most important Logs for Azure OpenAI Service and understand your usage trends easily.\r\n[Azure OpenAI Metrics](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/monitoring#azure-openai-metrics)",
                           "style": "upsell"
                         },
-                        "name": "text - Monitor"
+                        "name": "text - Insights Overview"
                       },
                       {
                         "type": 3,
@@ -5461,7 +5516,7 @@
                           "json": "### By CallerIP\r\nAll success \"Request / Response\" (Status Code: 200) operational logs, with the exclusion of administration logs divided by CallerIP Address.",
                           "style": "upsell"
                         },
-                        "name": "text - Monitor"
+                        "name": "text - Insights by CallerIP"
                       },
                       {
                         "type": 3,
@@ -5906,7 +5961,7 @@
                           "json": "### All Successful Requests\r\nAll success *\"Request / Response\"* (Status Code: 200) operational logs, with the exclusion of administration logs.",
                           "style": "upsell"
                         },
-                        "name": "text - Monitor"
+                        "name": "text - Insights - All Logs"
                       },
                       {
                         "type": 3,
@@ -6038,7 +6093,7 @@
                           "json": "### All failed requests\r\nAll failed *\"Request / Response\"* (Status Code: 404) operational logs, with the exclusion of administration logs.",
                           "style": "upsell"
                         },
-                        "name": "text - Monitor"
+                        "name": "text - Insights - Failures"
                       },
                       {
                         "type": 3,
@@ -6421,7 +6476,7 @@
               "comparison": "isEqualTo",
               "value": "Insights"
             },
-            "name": "Insights Group"
+            "name": "group - Insights"
           }
         ]
       },
@@ -6430,7 +6485,7 @@
         "comparison": "isNotEqualTo",
         "value": ""
       },
-      "name": "Azure OpenAI Service"
+      "name": "group - Azure OpenAI Service"
     }
   ],
   "fallbackResourceIds": [
